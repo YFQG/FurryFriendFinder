@@ -1,0 +1,297 @@
+﻿@model FurryFriendFinder.Models.Data.User;
+
+@{
+    List<FurryFriendFinder.Models.Data.Phone> phones = new();
+    ViewData["Title"] = "Create";
+}
+
+<h1>Register Client</h1>
+
+<p class="text-danger">
+    @ViewBag.MessageError
+</p>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ClientRegister">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Rh</label>
+                <select asp-for="IdRh" class="form-control" asp-items="ViewBag.Rhs"></select>
+                <span asp-validation-for="IdRh" class="text-danger"></span>
+            </div>
+            <div class="form-group m-2" id="ListPhones">
+            </div><input type="button" id="NewPhone" value="New Phone" class="btn btn-info m-2">
+
+            <div class="form-group m-2" id="ListAddress">
+            </div><input type="button" id="NewAddress" value="New Address" class="btn btn-success m-2">
+            <div class="form-group m-2" id="ListAccess">
+            </div><input type="button" id="NewAccess" value="New Access" class="btn btn-warning m-2">
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Login">Back to main page</a>
+</div>
+
+@section Scripts {
+    <script>
+
+
+
+        var i1 = 0;
+        var i2 = 0;
+        var i = 0;
+        const btn_agregarAccess = document.getElementById('NewAccess');
+        btn_agregarAccess.addEventListener("click", function () {
+            i2++;
+            const div_Paccess = document.getElementById('ListAccess');
+            //crear el div que contiene los 2 sub-divs
+            const div_principal = document.createElement('div');
+            //crear el div para el span e input del nombre
+            const div_Access = document.createElement('div');
+            div_Access.id = 'Access' + i2;
+            //crear el div para el span e input del apellido
+
+            //crear los span de nombre y apellido
+            const span1_Access = document.createElement('span');
+            span1_Access.innerHTML = 'Email';
+
+
+
+            const input1_Access = document.createElement('input');
+            input1_Access.type = 'text';
+            input1_Access.name = 'Email';
+            input1_Access.className = 'form-control';
+            input1_Access.required="true";
+
+            const span_Access = document.createElement('span');
+            span_Access.innerHTML = 'Password';
+
+
+
+            const input_Access = document.createElement('input');
+            input_Access.type = 'Password';
+            input_Access.name = 'Password';
+            input_Access.id = 'Pass'+i2;
+            input_Access.className = 'form-control';
+            input_Access.required = "true";
+
+            const span_Access2 = document.createElement('span');
+            span_Access2.innerHTML = 'Repeat Password';
+
+
+
+            const input_Access2 = document.createElement('input');
+            input_Access2.type = 'Password';
+            input_Access2.name = 'RepeatPassword';
+            input_Access2.id = 'RePass'+i2;
+            input_Access2.className = 'form-control';
+            input_Access2.required = "true";
+
+
+
+            const Button_Access = document.createElement('input');
+            Button_Access.id = 'BAc' + i2;
+            Button_Access.type = 'button';
+            Button_Access.value = 'Delete Access';
+            Button_Access.className = 'btn btn-danger m-3';
+
+
+            const hr_Access = document.createElement('hr');
+            const hr1_Access = document.createElement('hr');
+
+            if(i2==1){
+            div_Access.appendChild(hr_Access);
+            }
+            div_Access.appendChild(span1_Access);
+            div_Access.appendChild(input1_Access);
+            div_Access.appendChild(span_Access);
+            div_Access.appendChild(input_Access);
+            div_Access.appendChild(span_Access2);
+            div_Access.appendChild(input_Access2);
+
+            div_Access.appendChild(Button_Access);
+            div_Access.appendChild(hr1_Access);
+
+
+            div_Paccess.appendChild(div_Access);
+
+            createRepeatFunction(i2);
+            createAccessFunction(i2);
+        });
+
+            function createRepeatFunction(n) {
+
+            const pass2 = document.getElementById('RePass' + n);
+                if (pass2 != null) {
+
+                    pass2.addEventListener("keyup", function () {
+                    const pass = document.getElementById('Pass'+n);
+
+                    if(pass.value==pass2.value){
+                        pass2.className = 'form-control bg-primary text-white';
+                    }else{
+
+                        pass2.className = 'form-control bg-danger text-white';
+                    }
+                    });
+                }
+        }
+
+
+        function createAccessFunction(n) {
+
+            const b = document.getElementById('BAc' + n);
+            if (b != null) {
+                b.addEventListener("click", function () {
+                    const p = document.getElementById('Access' + n);
+
+                    const div_access = document.createElement('div');
+
+                    div_access.appendChild(p);
+                    console.log(div_access);
+                });
+            }
+        }
+        const btn_agregarAddress = document.getElementById('NewAddress');
+        btn_agregarAddress.addEventListener("click", function () {
+            i1++;
+            const div_Paddress = document.getElementById('ListAddress');
+            //crear el div que contiene los 2 sub-divs
+            const div_principal = document.createElement('div');
+            //crear el div para el span e input del nombre
+            const div_Address = document.createElement('div');
+            div_Address.id = 'Address' + i1;
+            //crear el div para el span e input del apellido
+
+            //crear los span de nombre y apellido
+            const span_Address = document.createElement('span');
+            span_Address.innerHTML = 'Address';
+
+
+
+            const input_Address = document.createElement('input');
+            input_Address.type = 'text';
+            input_Address.name = 'Address';
+            input_Address.className = 'form-control';
+
+
+            const Button_Address = document.createElement('input');
+            Button_Address.id = 'BAd' + i1;
+            Button_Address.type = 'button';
+            Button_Address.value = 'Delete Address';
+            Button_Address.className = 'btn btn-danger m-3';
+
+            const hr1_Address = document.createElement('hr');
+            const hr_Address = document.createElement('hr');
+
+
+            if (i1 == 1) {
+            div_Address.appendChild(hr1_Address);
+            }
+            div_Address.appendChild(span_Address);
+            div_Address.appendChild(input_Address);
+            div_Address.appendChild(Button_Address);
+            div_Address.appendChild(hr_Address);
+
+            div_Paddress.appendChild(div_Address);
+
+
+            createAddressFunction(i1);
+        });
+
+        function createAddressFunction(n) {
+
+            const b = document.getElementById('BAd' + n);
+            if (b != null) {
+                b.addEventListener("click", function () {
+                    const p = document.getElementById('Address' + n);
+
+                    const div_access = document.createElement('div');
+
+                    div_access.appendChild(p);
+                    console.log(div_access);
+                });
+            }
+        }
+        const btn_agregar = document.getElementById('NewPhone');
+        btn_agregar.addEventListener("click",function(){
+            i++;
+            const div_Pphone = document.getElementById('ListPhones');
+        //crear el div que contiene los 2 sub-divs
+            const div_principal = document.createElement('div');
+            //crear el div para el span e input del nombre
+            const div_Phone = document.createElement('div');
+            div_Phone.id='Phone'+i;
+            //crear el div para el span e input del apellido
+
+        //crear los span de nombre y apellido
+            const span_Phone = document.createElement('span');
+            span_Phone.innerHTML ='Phone';
+            
+            
+
+            const input_Phone = document.createElement('input');
+            input_Phone.type='number';
+            input_Phone.name = 'Phones';
+            input_Phone.className = 'form-control';
+
+
+            const Button_Phone = document.createElement('input');
+            Button_Phone.id='BP'+i;
+            Button_Phone.type = 'button';
+            Button_Phone.value = 'Delete Phone';
+            Button_Phone.className = 'btn btn-danger m-3';
+
+            const hr_Phone = document.createElement('hr');
+            const hr1_Phone = document.createElement('hr');
+
+
+            if (i== 1) {
+            div_Phone.appendChild(hr1_Phone);
+            }
+            div_Phone.appendChild(span_Phone);
+            div_Phone.appendChild(input_Phone);
+            div_Phone.appendChild(Button_Phone);
+            div_Phone.appendChild(hr_Phone);
+
+            div_Pphone.appendChild(div_Phone);
+
+
+            createPhoneFunction(i);
+                });
+
+        function createPhoneFunction(n){
+
+            const b = document.getElementById( 'BP' + n);
+            if(b!=null){
+                b.addEventListener("click", function () {
+                    const p = document.getElementById('Phone' + n);
+
+                    const div_access = document.createElement('div');
+
+                    div_access.appendChild(p);
+                    console.log(div_access);
+                });}
+        }
+    </script>
+    
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
