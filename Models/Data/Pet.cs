@@ -7,7 +7,7 @@ public partial class Pet
 {
     public int IdPet { get; set; }
 
-    public byte[]? PerImage { get; set; }
+    public byte[]? PetImage { get; set; }
 
     public string? PetName { get; set; }
 

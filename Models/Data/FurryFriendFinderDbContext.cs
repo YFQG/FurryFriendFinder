@@ -116,7 +116,7 @@ public partial class FurryFriendFinderDbContext : DbContext
 
         modelBuilder.Entity<Adoption>(entity =>
         {
-            entity.HasKey(e => e.IdAdoption).HasName("PK__Adoption__32EB504B80BB8931");
+            entity.HasKey(e => e.IdAdoption).HasName("PK__Adoption__32EB504B8658D1F1");
 
             entity.ToTable("Adoption");
 
@@ -127,7 +127,7 @@ public partial class FurryFriendFinderDbContext : DbContext
 
             entity.HasOne(d => d.IdAdoptionDateNavigation).WithMany(p => p.Adoptions)
                 .HasForeignKey(d => d.IdAdoptionDate)
-                .HasConstraintName("FK__Adoption__Id_Ado__1332DBDC");
+                .HasConstraintName("FK__Adoption__Id_Ado__656C112C");
 
             entity.HasOne(d => d.IdPetNavigation).WithMany(p => p.Adoptions)
                 .HasForeignKey(d => d.IdPet)
@@ -135,12 +135,12 @@ public partial class FurryFriendFinderDbContext : DbContext
 
             entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.Adoptions)
                 .HasForeignKey(d => d.IdUser)
-                .HasConstraintName("FK__Adoption__Id_Use__151B244E");
+                .HasConstraintName("FK__Adoption__Id_Use__66603565");
         });
 
         modelBuilder.Entity<AdoptionDate>(entity =>
         {
-            entity.HasKey(e => e.IdAdoptionDate).HasName("PK__Adoption__3B42D79926BEC8D0");
+            entity.HasKey(e => e.IdAdoptionDate).HasName("PK__Adoption__3B42D7999CFD204A");
 
             entity.ToTable("AdoptionDate");
 
@@ -339,9 +339,9 @@ public partial class FurryFriendFinderDbContext : DbContext
             entity.Property(e => e.IdAnimalType).HasColumnName("Id_AnimalType");
             entity.Property(e => e.IdBreed).HasColumnName("Id_Breed");
             entity.Property(e => e.IdStateHealth).HasColumnName("Id_StateHealth");
-            entity.Property(e => e.PerImage)
+            entity.Property(e => e.PetImage)
                 .HasColumnType("image")
-                .HasColumnName("perImage");
+                .HasColumnName("petImage");
             entity.Property(e => e.PetName)
                 .HasMaxLength(50)
                 .IsUnicode(false)
