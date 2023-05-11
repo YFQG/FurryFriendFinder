@@ -1,0 +1,45 @@
+﻿@model FurryFriendFinder.Models.Data.Access
+@{
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+    <section class="vh-100 d-flex justify-content-center align-items-center">
+      <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-md-9 col-lg-6 col-xl-5">
+            <img asp-append-version="true" src="~/Images/FFFLogo.png" class="img-fluid" />
+          </div>
+          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+            <form asp-action="Login">
+              <!-- Email input -->
+              <div class="form-outline mb-4">
+                <label asp-for="Email" class="form3Example3"></label>
+                <input asp-for="Email" class="form-control form-control-lg"
+                  placeholder="Enter a valid email address"  />
+                <span asp-validation-for="Email" class="text-danger"></span>
+              </div>
+
+              <!-- Password input -->
+              <div class="form-outline mb-3">
+                <label asp-for="Password" class="form3Example4"></label>
+                <input asp-for="Password" type="password" class="form-control form-control-lg"
+                  placeholder="Enter password"  />
+                <span asp-validation-for="Password" class="text-danger"></span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                        <!-- Password email -->
+                        <a asp-action="ForgotPassword" asp-controller="Login" class="text-body">Forgot password?</a>
+              </div>
+
+              <div class="text-center text-lg-start mt-4 pt-2">
+                  <input type="submit" value="Login" class="btn btn-primary btn-lg"
+                  style="padding-left: 2.5rem; padding-right: 2.5rem;" />
+                <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a asp-action="ClientRegister"
+                    class="link-danger">Register</a></p>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+      </section>
