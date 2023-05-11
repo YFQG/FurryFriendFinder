@@ -8,7 +8,7 @@
         <div class="text-center">
                 <p class="h1">Generar registro de movimientos</p>
         </div>
-        <form method="post" asp-controller="Report" asp-action="PrintMovement" class="m-3">
+        <form method="post" asp-controller="CenterAdmin" asp-action="PrintMovement" class="m-3">
             <div class="align-content-center">
                 <label class="row " for="first">Fecha de inicio:</label>
                 <input class="row" type="datetime-local" id="first" name="first">
@@ -25,7 +25,7 @@
     </div>
 
     <div class="col-md-6 m-2">
-        <form method="post" asp-controller="Report" asp-action="PrintAdoption">
+        <form method="post" asp-controller="CenterAdmin" asp-action="PrintAdoption">
     
     
         
@@ -44,7 +44,3 @@
         </form>
     </div>
 </div>
-
-<p>
-    <a asp-action="CreateAdoption">Create New Adoption</a>
-</p>
