@@ -1,4 +1,5 @@
 ﻿using FurryFriendFinder.Models.Data;
+using FurryFriendFinder.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rotativa.AspNetCore;
