@@ -1,0 +1,46 @@
+﻿@{
+
+    Layout = "_LayoutCenterAdmin";
+}
+
+<div class="row">   
+    <div class="col-md-6 m-2">
+        <div class="text-center">
+                <p class="h1">Generar registro de movimientos</p>
+        </div>
+        <form method="post" asp-controller="CenterAdmin" asp-action="PrintMovement" class="m-3">
+            <div class="align-content-center">
+                <label class="row " for="first">Fecha de inicio:</label>
+                <input class="row" type="datetime-local" id="first" name="first">
+        
+                <label class="row" for="last">Fecha de fin:</label>
+                <input class="row" type="datetime-local" id="last" name="last">
+                <br>
+            </div>
+            <div class="text-center">
+                <button type="submit" id="printMovement" class="btn btn-primary active m-3">Imprimir movimientos</button>
+            </div>
+            
+        </form>
+    </div>
+
+    <div class="col-md-6 m-2">
+        <form method="post" asp-controller="CenterAdmin" asp-action="PrintAdoption">
+    
+    
+        
+            <div class="text-center">
+                    <p class="h1">Generar registro de adopciones</p>
+             </div>
+                <label class="row" for="first">Fecha de inicio:</label>
+                <input class="row" type="datetime-local" id="first2" name="first">
+                <label class="row" for="last">Fecha de fin:</label>
+                <input class="row" type="datetime-local" id="last2" name="last">
+                <br>
+
+            <div class="text-center">
+                <button type="submit" id="printAdoption" class="btn btn-primary active m-3">Imprimir adopciones</button> 
+            </div>
+        </form>
+    </div>
+</div>
