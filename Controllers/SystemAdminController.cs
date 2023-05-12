@@ -27,8 +27,9 @@ namespace FurryFriendFinder.Controllers
 
         public async Task<IActionResult> DetailsUser(int id)
         {
-
-            var proyectContext = await _context.Users.FindAsync(id);
+            var Accesses =_context.Accesses.Include(p => p.IdRoleNavigation).Where(x=>x.IdUser==id);
+            var proyectContext =  _context.Users.Include(p => p.Addresses).Include(p => p.Phones).Include(p=>p.IdRhNavigation).First(x=>x.IdUser==id);
+            proyectContext.Accesses = Accesses.ToList();
             return View(proyectContext);
         }
 
@@ -55,7 +56,7 @@ namespace FurryFriendFinder.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.s
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUser([Bind("IdUser,Name,State,BirthDate,Rh,IdRole,Phones")] User user, List<long> Phones, List<string> Address, List<string> Email, List<string> Password, List<int> Role)
+        public async Task<IActionResult> CreateUser([Bind("IdUser,Name,State,BirthDate,IdRh,IdRole,Phones")] User user, List<long> Phones, List<string> Address, List<string> Email, List<string> Password, List<int> Role)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +79,7 @@ namespace FurryFriendFinder.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(User));
             }
 
             return View(user);
@@ -92,11 +93,12 @@ namespace FurryFriendFinder.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.Include(p=>p.Accesses).Include(p => p.Addresses).Include(p => p.Phones).FirstAsync(x => x.IdUser == id) ;
             if (user == null)
             {
                 return NotFound();
             }
+
             ViewBag.Rhs = new SelectList(_context.Rhs, "IdRh", "RhType");
             return View(user);
         }
@@ -106,12 +108,8 @@ namespace FurryFriendFinder.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(int id, [Bind("IdUser,Name,State,BirthDate,Rh,IdRole")] User user, List<int> Phones, List<string> Address, List<string> Email, List<string> Password1, List<string> Password, List<int> role)
+        public async Task<IActionResult> EditUser([Bind("IdUser,Name,State,BirthDate,IdRh,IdRole")] User user, List<long>? Phones=null, List<string>? Address=null, List<string>? Email=null, List<string>? Password1 = null, List<string>? Password = null, List<int>? role = null)
         {
-            if (id != user.IdUser)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -153,11 +151,11 @@ namespace FurryFriendFinder.Controllers
                     var num2 = 0;
                     foreach (var p in Email)
                     {
-                        if (Password1[num] != null)
-                            _context.Accesses.Add(new Access { Email = Email[num], Password = Password1[num], IdRole = role[num], IdUserNavigation = user });
+                        if (Password1.Count>num)
+                            _context.Accesses.Add(new Access { Email = Email[num], Password = Password1[num], IdRole = role[num], IdUser = user.IdUser });
                         else
                         {
-                            _context.Accesses.Add(new Access { Email = Email[num], Password = Encrypt.GetSHA256(Password[num2]), IdRole = role[num], IdUserNavigation = user });
+                            _context.Accesses.Add(new Access { Email = Email[num], Password = Encrypt.GetSHA256(Password[num2]), IdRole = role[num], IdUser = user.IdUser });
                             num2++;
                         }
                         num++;
@@ -175,10 +173,12 @@ namespace FurryFriendFinder.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(User));
             }
 
-            return View(user);
+            var user1 = await _context.Users.Include(p => p.Accesses).Include(p => p.Addresses).Include(p => p.Phones).FirstAsync(x => x.IdUser == user.IdUser);
+            ViewBag.Rhs = new SelectList(_context.Rhs, "IdRh", "RhType");
+            return View(user1);
         }
 
         // GET: Users/Delete/5
@@ -189,7 +189,7 @@ namespace FurryFriendFinder.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users
+            var user = await _context.Users.Include(p => p.Addresses).Include(p => p.Phones).Include(p => p.IdRhNavigation).Include(p=>p.Accesses)
                 //.Include(u => u.IdRoleNavigation)
                 .FirstOrDefaultAsync(m => m.IdUser == id);
             if (user == null)
@@ -209,35 +209,14 @@ namespace FurryFriendFinder.Controllers
             {
                 return Problem("Entity set 'ProyectContext.Users'  is null.");
             }
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.Include(p => p.AppointmentUsers).Include(p => p.Comments).Include(p => p.Publications).Include(p=>p.Adoptions).Include(p => p.Addresses).Include(p => p.Phones).Include(p => p.IdRhNavigation).FirstAsync(x=>x.IdUser==id);
             if (user != null)
             {
-                var Phone = _context.Phones.ToList();
-                Phone = Phone.FindAll(x => x.IdUser == user.IdUser);
-                if (Phone != null)
-                {
-                    _context.Phones.RemoveRange(Phone);
-                    await _context.SaveChangesAsync();
-                }
-                var Addres = _context.Addresses.ToList();
-                Addres = Addres.FindAll(x => x.IdUser == user.IdUser);
-                if (Addres != null)
-                {
-                    _context.Addresses.RemoveRange(Addres);
-                    await _context.SaveChangesAsync();
-                }
-                var Access = _context.Accesses.ToList();
-                Access = Access.FindAll(x => x.IdUser == user.IdUser);
-                if (Access != null)
-                {
-                    _context.Accesses.RemoveRange(Access);
-                    await _context.SaveChangesAsync();
-                }
                 _context.Users.Remove(user);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(User));
         }
 
         private bool UserExists(int id)

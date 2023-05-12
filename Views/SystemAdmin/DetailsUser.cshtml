@@ -4,14 +4,6 @@
 @{
     Layout = "_LayoutSystemAdmin";
     ViewData["Title"] = "Details";
-    var Phones = _Context.Phones.Where(x => x.IdUser == Model.IdUser).ToList();
-    var Address = _Context.Addresses.Where(x => x.IdUser == Model.IdUser).ToList();
-    var Access = _Context.Accesses.Where(x => x.IdUser == Model.IdUser).ToList();
-    var Adoptions = _Context.Adoptions.Where(x => x.IdUser == Model.IdUser).ToList();
-    /* var Vacciness = _context.Vaccines.ToList();
-     Vacciness = Vacciness.FindAll(x => x.IdPet == Model.IdPet);
-     var StateHealths = _context.StateHealths.Where(x=>x.IdStateHealth==Model.IdStateHealth).FirstOrDefault();
-     var Adoption = _context.Adoptions.Where(x => x.IdPet == Model.IdPet).FirstOrDefault();*/
 }
 
 <h1>Details</h1>
@@ -38,7 +30,7 @@
                     @Html.DisplayFor(model => model.IdRhNavigation.RhType)
         </dd>
         
-            @if (Phones.Count > 0)
+            @if (Model.Phones.Count > 0)
             {
                 <dt class="col-sm-11 m-1 text-info">
                     <span >Phones</span>
@@ -46,7 +38,7 @@
             @{
                 int p = 0;
             }
-            @foreach (var phon in Phones)
+            @foreach (var phon in Model.Phones)
             {
                p++;
                 <dt class="col-sm-3">
@@ -56,7 +48,7 @@
                 @(phon.Phone1)
             </dd>
             }
-            @if (Address.Count > 0)
+            @if (Model.Addresses.Count > 0)
             {
                 <dt class="col-sm-11  m-1 text-info">
                     <span>Address</span>
@@ -65,7 +57,7 @@
             @{
                 var ad = 0;
             }
-            @foreach (var ads in Address)
+            @foreach (var ads in Model.Addresses)
     {
                 ad++;
 
@@ -77,13 +69,13 @@
         </dd>
 
      }
-            @if (Access.Count > 0)
+            @if (Model.Accesses.Count > 0)
             {
                 <dt class="col-sm-11 m-1 text-info">
                     <span>Access</span>
         </dt>
             }
-    @foreach (var acs in Access)
+    @foreach (var acs in Model.Accesses)
     {
             <dt class="col-sm-3">
                 <span>Email</span>
@@ -94,7 +86,7 @@
                     </dd>
             <dt class="col-sm-3">Role</dt>
             <dd class="col-sm-9" value="" required>
-                    @(acs.IdRole)
+                    @(acs.IdRoleNavigation.RoleType)
                     </dd>
     }
     </dl>
