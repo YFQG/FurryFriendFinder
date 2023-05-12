@@ -31,11 +31,14 @@ namespace FurryFriendFinder.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(Access _access) //Method that recive mapped object from the access class
         {
+            //calls the UserValidation method to validate the user's email and password. If a valid user is found,
+            //the method returns a User object; otherwise, it returns null
             var user = UserValidation(_access.Email, _access.Password); 
             if (user != null) 
             {
-                var info = _context.Users.Where(u => u.IdUser == user.IdUser).FirstOrDefault(); //Search for the user that match with email and password
-                var claims = new List<Claim> 
+                // retrieves the user's information from the database based on the user's ID.
+                var info = _context.Users.Where(u => u.IdUser == user.IdUser).FirstOrDefault(); 
+                var claims = new List<Claim> //creates a list of claims for the authenticated user.
                 {
                     new Claim(ClaimTypes.Name, user.IdUser.ToString()), //Create
                     new Claim(ClaimTypes.Email, user.Email)
@@ -50,7 +53,7 @@ namespace FurryFriendFinder.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity)); //Crear la cookie en la sesion de logeo
                 UserRol.User = info;
-                return user.IdRole switch
+                return user.IdRole switch //returns a redirect to the appropriate page based on the user's role.
                 {
                     (int)Rol.Client => RedirectToAction("Index", "Client"),
                     (int)Rol.CenterAdmin => RedirectToAction("Index", "CenterAdmin"),
