@@ -1,0 +1,49 @@
+﻿@using FurryFriendFinder.Models.Data;
+@model FurryFriendFinder.Models.Data.Inventory
+
+@{
+    Layout = "_LayoutPetSitter";
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Inventory</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdProductNavigation.ProductName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdProductNavigation.ProductName)
+        </dd>
+        <dt class="col-sm-2">
+            @nameof(AnimalType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdProductNavigation.IdAnimalTypeNavigation.Type)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdProductNavigation.IdPackingNavigation.TypePacking)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdProductNavigation.IdPackingNavigation.TypePacking)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdProductNavigation.IdBrandNavigation.NameBrand)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdProductNavigation.IdBrandNavigation.NameBrand)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Inventories">Back to List</a>
+</div>

@@ -1,0 +1,85 @@
+﻿@using FurryFriendFinder.Models.Data;
+@model FurryFriendFinder.Models.ViewModels.extraPet
+
+@{
+    Layout = "_LayoutPetSitter";
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Pet</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pet.PetImage)
+        </dt>
+        <dd class="col-sm-10">
+            <img class="card-img-top w-25" src="data:image/png;base64,@Convert.ToBase64String(Model.pet.PetImage)" />
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pet.PetName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.pet.PetName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pet.Gender)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.pet.Gender)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pet.BirthYear)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.pet.BirthYear)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pet.IdBreedNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.pet.IdBreedNavigation.Breed1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pet.IdAnimalTypeNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.pet.IdAnimalTypeNavigation.Type)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pet.IdStateHealthNavigation.State)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.pet.IdStateHealthNavigation.State)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.pet.IdStateHealthNavigation.Castrated)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.pet.IdStateHealthNavigation.Castrated)
+        </dd>
+        @foreach(var vacc in Model.pet.Vaccines)
+        {
+        <dt class = "col-sm-2">
+            @nameof(Vaccine)
+        </dt>
+        <dd class="col-sm-10">
+                @vacc.TypeVaccine
+        </dd>
+
+            <dt class="col-sm-2">
+                @nameof(vacc.VaccinationDate)
+            </dt>
+            <dd class="col-sm-10">
+                @vacc.VaccinationDate
+            </dd>
+        }
+
+    </dl>
+</div>
+<div>
+    <a asp-action="PetEdit" asp-route-id="@Model?.pet.IdPet">Edit</a> |
+    <a asp-action="Pets">Back to List</a>
+</div>

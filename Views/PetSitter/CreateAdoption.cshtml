@@ -1,0 +1,109 @@
+﻿@using FurryFriendFinder.Models.Data;
+@using Newtonsoft.Json;
+<!--Se añadio link y script al Layout-->
+@model Pet
+
+@{
+    Layout = "_LayoutPetSitter";
+    ViewData["Title"] = "Adoption";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>Pet</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PetImage)
+        </dt>
+        <dd class="col-sm-10">
+            <img class="card-img-top w-25" src="data:image/png;base64,@Convert.ToBase64String(Model.PetImage)" />
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PetName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PetName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BirthYear)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BirthYear)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdBreedNavigation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdBreedNavigation.Breed1)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdAnimalTypeNavigation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdAnimalTypeNavigation.Type)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdStateHealthNavigation.State)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdStateHealthNavigation.State)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdStateHealthNavigation.Castrated)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdStateHealthNavigation.Castrated)
+        </dd>
+        @foreach (var vacc in Model.Vaccines)
+        {
+            <dt class="col-sm-2">
+                @nameof(Vaccine)
+            </dt>
+            <dd class="col-sm-10">
+                @vacc.TypeVaccine
+            </dd>
+
+            <dt class="col-sm-2">
+                @nameof(vacc.VaccinationDate)
+            </dt>
+            <dd class="col-sm-10">
+                @vacc.VaccinationDate
+            </dd>
+        }
+
+
+</div>
+<div class="row">
+    <form asp-action="AdoptionCertificate" method="post">
+
+        <input type="hidden" name="pet" value="@Model.PetName" />
+
+        <div class="ui-widget">
+            <label>Ingrese el cliente que va adoptar la mascota</label>
+            <input type="text" name="user" id="user"></input>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Adopt" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+<div>|
+    <a asp-action="Pets">Back to List</a>
+</div>
+
+@section scripts{
+    <script>
+        $("#user").autocomplete({
+            source: '@Url.Action("GetUsers", "PetSitter")',//Ruta a donde debe ir
+            minlenght: 2, //minimo letras que debe obtener para autocompletar
+        });
+    </script>
+}

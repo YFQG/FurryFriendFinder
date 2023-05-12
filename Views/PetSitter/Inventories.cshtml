@@ -1,0 +1,60 @@
+﻿@using FurryFriendFinder.Models.Data;
+@model IEnumerable<Inventory>
+
+@{
+    Layout = "_LayoutPetSitter";
+    ViewData["Title"] = "Index";
+}
+<a asp-action="InventoryCreate">Make Movement</a>
+
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProductNavigation.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProductNavigation.IdPackingNavigation.TypePacking)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProductNavigation.IdBrandNavigation.NameBrand)
+            </th>
+            <th>
+                @nameof(AnimalType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @item.IdProductNavigation.ProductName
+                </td>
+                <td>
+                    @(item.IdProductNavigation.IdPackingNavigation.TypePacking)
+                </td>
+                <td>
+                    @(item.IdProductNavigation.IdBrandNavigation.NameBrand)
+                </td>
+                <td>
+                    @(item.IdProductNavigation.IdAnimalTypeNavigation.Type)
+                </td>
+                <td>
+                    <a asp-action="InventoryDetails" asp-route-id="@item.IdInventory">Details</a> |
+                    <a asp-action="InventoryCreate" asp-route-id="@item.IdProduct">Make Movement</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

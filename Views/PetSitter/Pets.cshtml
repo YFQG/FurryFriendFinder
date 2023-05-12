@@ -1,0 +1,127 @@
+﻿@using FurryFriendFinder.Models.Data
+@model IEnumerable<FurryFriendFinder.Models.Data.Pet>
+@inject FurryFriendFinderDbContext _context
+@{
+    Layout = "_LayoutPetSitter";
+    var Vaccine = _context.Vaccines.ToList();
+    var StateHealth = _context.StateHealths.ToList();
+    var AnimalType = _context.AnimalTypes.ToList();
+    var Breed = _context.Breeds.ToList();
+    var Adoptions = _context.Adoptions.ToList();
+    var AdoptionsDate = _context.AdoptionDates.ToList();
+
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="PetCreate">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th style="width:50%;min-width:25%">
+                @Html.DisplayNameFor(model => model.PetImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PetName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BirthYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adoptions.First().IdAdoptionDateNavigation.RegisterAdoption)
+            </th>
+            
+            <th>
+            @Html.DisplayNameFor(model => model.IdAnimalTypeNavigation.Type)
+            </th>
+            <th>
+                @nameof(Breed)
+            </th>
+            <th style ="width:25%;min-width:25%">
+                @Html.DisplayNameFor(model => model.IdStateHealthNavigation.State)
+            </th>
+
+            <th>
+            @Html.DisplayNameFor(model => model.IdStateHealthNavigation.Castrated)
+            </th>
+            
+          
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.PetImage != null)
+                    {
+                        <img style="width:50%;min-width:25%" src="data:image/png;base64,@Convert.ToBase64String(item.PetImage)" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PetName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthYear)
+                </td>
+                <td>@if (item.Adoptions.Count >0)
+                    {
+                        <p>  @AdoptionsDate.Find(x=>(Adoptions.Find(x=>x.IdPet==item.IdPet).IdAdoptionDate)==x.IdAdoptionDate).RegisterAdoption</p>
+                    
+                    }
+
+                </td>
+
+                <td>
+                    @AnimalType.Find(x=>x.IdAnimalType==item.IdAnimalType).Type
+                </td>
+                    <td>
+                        @if (item.IdBreed != null)
+                    {
+
+                        <p>@item.IdBreedNavigation.Breed1</p>
+                    }
+                </td>
+                <td>
+                    <p>
+                    @StateHealth.Find(x=>x.IdStateHealth==item.IdStateHealth).State</p>
+                </td>
+                <td>
+                @StateHealth.Find(x=>x.IdStateHealth==item.IdStateHealth).Castrated
+                </td>
+             
+                <td>
+                    <div class="row">
+                    <a asp-action="PetEdit" asp-route-id="@item.IdPet" class="col-md-5">Edit</a>
+                    <a asp-action="PetDetails" asp-route-id="@item.IdPet" class="col-md-6">Details</a>
+                    <a asp-action="PetDelete" asp-route-id="@item.IdPet" class="col-md-6">Delete</a>
+                        @if (item.Adoptions.Count == 0)
+                        {
+                            <a asp-action="CreateAdoption" asp-route-id="@item.IdPet" class="col-md-7">Adoption</a>
+                        }
+                    </div>
+                </td>
+
+
+
+
+
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+
