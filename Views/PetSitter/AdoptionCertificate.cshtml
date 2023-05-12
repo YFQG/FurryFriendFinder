@@ -1,6 +1,6 @@
 ﻿@model FurryFriendFinder.Models.ViewModels.Certificate
 @{
-    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";  
+    Layout = "_LayoutEmpty";  
 }
 <!DOCTYPE html>
 <html>
@@ -11,24 +11,24 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container mt-4">
-        <div style="margin-top:70px;">
+    <div class="container display-4">
+        <div style="margin-top:70px;margin-right:100px">
             <div class="col-md-12 text-center p-4">
-                <h1>Certificado de Adopción</h1>
+                <p><strong>Certificado de Adopción</strong></p>
             </div>
         <div class="row">
             <div class="col-md-4">
-                <img src="data:image/png;base64,@Convert.ToBase64String(Model.Pet.PetImage)"
-                     class="img-fluid" alt="Mascota" style="max-width: 100%;">
+                <img class="w-25" src="data:image/png;base64,@Convert.ToBase64String(Model.Pet.PetImage)"
+                     alt="Mascota" >
             </div>
-            <div class="col-md-4 ">
-                    <h4><strong>Mascota:</strong></h4>
+                <div style="position:absolute;margin-left:600px;margin-top:-290px">
+                    <p><strong>Mascota:</strong></p>
                     <p><strong>Nombre:</strong> @Model.Pet.PetName</p>
                 <p><strong>Edad:</strong> @Model.Pet.BirthYear</p>
                 <p><strong>Sexo: </strong> @Model.Pet.Gender</p>
             </div>
-            <div class="col-md-4 ">
-                <h3>Datos del Adoptante</h3>
+                <div style="position:absolute;margin-left:1000px;margin-top:-300px">
+                    <p><strong>Datos del Adoptante</strong></p>
                 <p><strong>Nombre:</strong> @Model.User.Name</p>
                     @if (Model.User.Accesses.Count > 0){
                 <p><strong>Correo: </strong>@Model.User.Accesses.First().Email </p>}
@@ -43,7 +43,9 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
+        <br />
+        <br />
+        <div class="row p-6">
             <div class="col-md-12">
                 <p>Se extiende el presente certificado como prueba de adopción de la mascota anteriormente descrita. El adoptante se compromete a brindarle a la mascota un hogar seguro y amoroso, así como a proporcionarle los cuidados necesarios para su bienestar y felicidad.</p>
             </div>

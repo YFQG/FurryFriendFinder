@@ -47,11 +47,13 @@ namespace FurryFriendFinder.Controllers
 
                     if (adoptionDate == null)
                     {
-                        adoptionDate = new AdoptionDate();
-                        adoptionDate.RegisterAdoption = currentDate;
-                        _context.Add(adoptionDate);
-                    }
+                    adoptionDate = new AdoptionDate
+                    {
+                        RegisterAdoption = currentDate
+                    };
                     adoption.IdAdoptionDateNavigation = adoptionDate;
+                    _context.Add(adoptionDate);
+                    }
                     _context.Add(adoption);
                     await _context.SaveChangesAsync();
 
@@ -61,6 +63,7 @@ namespace FurryFriendFinder.Controllers
                         PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
                         PageSize = Rotativa.AspNetCore.Options.Size.A4,
                         ViewData = ViewData
+                        
                     };
                 }
                 else
