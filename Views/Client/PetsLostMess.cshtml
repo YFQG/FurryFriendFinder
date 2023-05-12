@@ -1,0 +1,64 @@
+﻿@model FurryFriendFinder.Models.Data.Comment
+
+@{
+
+    Layout = "_LayoutClient";
+    ViewData["Title"] = "Create";
+    //IFormFile Imagee ;
+}
+
+<h1>Create</h1>
+
+<h4>Publication</h4>
+<hr />
+<div class="row">
+    <div class="col-md-5 card">
+        <div class="list-group-item">
+            <img class="card-img-top" src="data:image/png;base64,@Convert.ToBase64String(@ViewBag.Image)" />
+
+            <div class="card-body card-text">
+                @ViewBag.Date
+                Desription
+                @ViewBag.Desription
+            </div>
+            @if (@ViewBag.IdUserNavigation != null)
+            {
+                @ViewBag.IdUserNavigation.name
+            }
+
+
+        </div>
+
+        <div class="list-group-item">
+            <form asp-action="PetsLostMess">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="IdPublication" />
+                <input type="hidden" asp-for="IdUser" />
+                <div class="form-group">
+                    <label asp-for="Comment1" class="control-label"></label>
+                    <input asp-for="Comment1" class="form-control" />
+                    <span asp-validation-for="Comment1" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<div>
+    <a asp-action="PetsLost">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @{
+
+    }
+}

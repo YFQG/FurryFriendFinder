@@ -1,0 +1,54 @@
+﻿@using FurryFriendFinder.Models.Data;
+@model IEnumerable<FurryFriendFinder.Models.Data.AppointmentUser>
+@inject FurryFriendFinderDbContext _Context
+@{
+    Layout = "_LayoutClient";
+    ViewData["Title"] = "Index";
+    var User = _Context.Users.ToList();
+    var Pet = _Context.Pets.ToList();
+    var Date = _Context.Appointments.ToList();
+}
+
+<p>
+    <a asp-action="CreateAppointment"> New Appointment</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdAppointmentNavigation.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdPetNavigation.PetName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdUserNavigation.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            var User1 = User.Find(x => item.IdUser == x.IdUser);
+            var Pet1 = Pet.Find(x => x.IdPet == item.IdPet);
+            var Date1 = Date.Find(x => x.IdAppointment == item.IdAppointment);
+            <tr>
+                <td>
+                    @Date1.Date
+                </td>
+                <td>
+                    @Pet1.PetName
+                </td>
+                <td>
+                    @User1.Name
+                </td>
+                <td>
+                    <a asp-action="EditAppointment" asp-route-id="@item.IdAppointmentUser">Edit</a> |
+                    <a asp-action="DeleteAppointment" asp-route-id="@item.IdAppointmentUser">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
