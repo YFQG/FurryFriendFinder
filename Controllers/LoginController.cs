@@ -30,40 +30,45 @@ namespace FurryFriendFinder.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(Access _access)
         {
+            var constans = _context.Constants.ToList();
             var user = UserValidation(_access.Email, _access.Password);
             if (user != null)
             {
                 var info = _context.Users.Where(u => u.IdUser == user.IdUser).FirstOrDefault();
-                var claims = new List<Claim>
+                    if (info.State == true)
+                    {
+                        var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.IdUser.ToString()),
                     new Claim(ClaimTypes.Email, user.Email)
                 };
-                var permit = (from r in _context.Roles
-                              where r.IdRole == user.IdRole
-                              select r.RoleType).ToList();
-                foreach (string rol in permit)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, rol));
-                }
+                        var permit = (from r in _context.Roles
+                                      where r.IdRole == user.IdRole
+                                      select r.RoleType).ToList();
+                        foreach (string rol in permit)
+                        {
+                            claims.Add(new Claim(ClaimTypes.Role, rol));
+                        }
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity)); //Crear la cookie en la sesion de logeo
-                UserRol.User = info;
-                return user.IdRole switch
-                {
-                    (int)Rol.Client => RedirectToAction("Index", "Client"),
-                    (int)Rol.CenterAdmin => RedirectToAction("Index", "CenterAdmin"),
-                    (int)Rol.SystemAdmin => RedirectToAction("User", "SystemAdmin"),
-                    (int)Rol.PetSitter => RedirectToAction("Inventories", "PetSitter"),
-                    _ => RedirectToAction("Index", "Home"),
-                };
-            }
-            else
-            {
-                return View();
-            }
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity)); //Crear la cookie en la sesion de logeo
+                        UserRol.User = info;
+                        return user.IdRole switch
+                        {
+                            (int)Rol.Client => RedirectToAction("Index", "Client"),
+                            (int)Rol.CenterAdmin => RedirectToAction("Index", "CenterAdmin"),
+                            (int)Rol.SystemAdmin => RedirectToAction("User", "SystemAdmin"),
+                            (int)Rol.PetSitter => RedirectToAction("Inventories", "PetSitter"),
+                            _ => RedirectToAction("Index", "Home"),
+                        };
+                    }
+                    else
+                        ViewBag.MessageError = constans.Find(x => x.Description == "MessageError9");
+            } else
+                ViewBag.MessageError = constans.Find(x => x.Description == "MessageError10");
+            return View();
+            
         }
 
         public IActionResult ClientRegister()
@@ -150,7 +155,19 @@ namespace FurryFriendFinder.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Login");
         }
+        public IActionResult TryLogIn()
+        {
+            try
+            {
+                UserRol.User= _context.Users.Find(Convert.ToInt32(HttpContext.User.Identity.Name));
+                return RedirectToAction("Index", "Client");
+            }
+            catch(Exception)
+            {
 
+                return RedirectToAction("Logout");
+            }
+        }
         public Access UserValidation(string email, string password)
         {
             return _context.Accesses.Where(u => u.Email == email && u.Password == Encrypt.GetSHA256(password)).FirstOrDefault();
