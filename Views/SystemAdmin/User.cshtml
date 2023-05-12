@@ -1,0 +1,203 @@
+﻿@using FurryFriendFinder.Models.Data;
+@model IEnumerable<FurryFriendFinder.Models.Data.User>
+@inject FurryFriendFinderDbContext _Context
+@{
+    Layout = "_LayoutSystemAdmin";
+    ViewData["Title"] = "Index";
+    var identity = 0;
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="CreateUser" class="">Create New</a>
+</p>
+<div class="table-responsive">
+<table class="table">
+    <thead>
+        <tr>
+            <th class="col-md-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th class="col-md-2">
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th  class="col-md-2">
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </th>
+            <th class="col-md-2">
+                @Html.DisplayNameFor(model => model.IdRhNavigation.RhType)
+            </th>
+
+            <th class="col-md-2">Phones</th>
+            <th class="col-md-2">Address</th>
+            <th class="col-md-2">Access</th>
+            <th class="col-md-2"></th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @{
+            var Phones = _Context.Phones.ToList();
+            var Address = _Context.Addresses.ToList();
+            var Access = _Context.Accesses.ToList();
+            var Role = _Context.Roles.ToList();
+            }
+
+@foreach (var item in Model) {
+            var Phones1 = Phones.FindAll(x => x.IdUser == item.IdUser);
+            var Address1 = Address.FindAll(x => x.IdUser == item.IdUser);
+            var Access1 = Access.FindAll(x => x.IdUser == item.IdUser);
+        <tr class="roe">
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.IdRhNavigation.RhType)
+            </td>
+            
+            <td  class="col-md-2">
+            @{identity++;}
+                <style>
+                    
+                    .moda@(identity){
+                        display:none;
+                        background-color:white;
+                        position:absolute;
+                        width:16%;
+                        z-index:1;
+                        border:solid 2px Gainsboro;
+                        padding:0.5% 1% 0% 1%;
+                    }
+                    .mod@(identity):focus-within> .moda@(identity) {
+                        display:block;
+                    }
+
+                </style>
+                <div class="mod@(identity)">
+                    
+                    <input class="btn btn-outline-primary m-1" type="button" value="Show Phones">
+                        
+                    
+                    <div class="moda@(identity)" >
+                        
+                        <div class="col-md model-body">
+                            
+                        <div class="row list-group-item">
+                            <div class="row text-primary">Phone
+                            </div>
+                            </div>
+                            @foreach(var item1 in Phones1)
+                    {
+                        <div class="row list-group-item">
+                          
+                               <div class="row">@item1.Phone1</div>  
+                        </div>
+                    }
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td class="col-md-2">
+                
+                    @{
+                        identity++;
+                    }
+                    <style>
+                    
+                    .moda@(identity){
+                        display:none;
+                        background-color:white;
+                        position:absolute;
+                        width:200px;
+                        z-index:1;
+                        border:solid 2px Gainsboro;
+                        padding:0.5% 1% 0% 1%;
+                    }
+                    .mod@(identity):focus-within> .moda@(identity) {
+                        display:block;
+                        margin-right:-150px;
+                        margin-bottom:300px;
+                    }
+
+                </style>
+                <div class="mod@(identity)">
+                    
+                    <input class="btn btn-outline-primary m-1" type="button" value="Show Address">
+                    <div class="moda@(identity)" >
+                        
+                        <div class="col-md model-body">
+                            <div class="list-group-item">
+                            <div class="row text-primary">Address</div>
+                    </div>
+
+                            @foreach(var item1 in Address1)
+                    {
+                        <div class="row list-group-item">
+                            <div class="row">@item1.Address1</div>  
+                           
+                        </div>
+                    }
+                        </div>
+                    </div>
+                </div>
+            </td>
+            
+            <td class="col-md-2">
+                @{identity++;}
+                <style>
+                    
+                    .moda@(identity){
+                        display:none;
+                        background-color:white;
+                        position:absolute;
+                        width:25%;
+                        z-index:1;
+                        border:solid 2px Gainsboro;
+                        padding:0.5% 1% 0% 1%;
+                    }
+                    .mod@(identity):focus-within> .moda@(identity) {
+                        display:block;
+                    }
+
+                </style>
+                <div class="mod@(identity)">
+                    
+                    <input class="btn btn-outline-primary m-1" type="button" value="Show Access">
+                        
+                    <div class="moda@(identity)" >
+                        
+                        <div class="col-md model-body">
+                            @foreach(var item1 in Access1)
+                    {
+                        <div class="row list-group-item">
+
+                               <div class="row text-primary">Email:</div>
+                               <div class="row">@item1.Email</div>
+                            <div class="row">
+                               <div class="col-md text-primary">Rol:</div>
+                               <div class="col-md">@(Role.Find(x=>x.IdRole==item1.IdRole).RoleType)</div>  
+                            </div>
+                        </div>
+                    }
+                        </div>
+                    </div>
+                </div>
+            </td>
+            
+            <td class="col-md-2">
+                <a asp-action="EditUser" asp-route-id="@item.IdUser">Edit</a> |
+                <a asp-action="DetailsUser" asp-route-id="@item.IdUser">Details</a> |
+                <a asp-action="DeleteUser" asp-route-id="@item.IdUser">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
