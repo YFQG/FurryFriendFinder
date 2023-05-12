@@ -1,0 +1,122 @@
+﻿@model List<FurryFriendFinder.Models.ViewModels.AdoptionTable>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Adoptions</title>
+    <style>
+        .contenedor {
+           width: 900px !important;
+           height:842px !important;
+           margin:auto;
+        }
+        body{
+           font-family:Arial, Helvetica, sans-serif
+        }
+        p.title{
+           font-weight:bold;
+        }
+         p.title2{
+           font-weight:bold;
+           color: #03A99F;
+           font-size:20px;
+        }
+        p.text{
+           font-size:15px;
+           font-weight:100;
+           color:#858585;
+        }
+        p{
+           margin:0px
+        }
+        .tbth{
+           text-align:left;
+        }
+        table.tbproductos{
+            border-collapse: separate;
+            border-spacing: 4px;
+        }
+        table.tbproductos thead tr th {
+           background-color: #03A99F;
+           padding:10px;
+           font-size:15px;
+           color:white;
+        }
+        table.tbproductos tbody tr td{
+           padding:10px;
+        }
+        .item{
+           font-size:15px;
+           font-weight:100;
+           color:#757575;
+        }
+        .item-2{
+        font-size:15px;
+           font-weight:bold;
+           color:#757575;
+        }
+        .item-3{
+           font-size:15px;
+           font-weight:bold;
+           background-color:#03A99F;
+           color:white;
+        }
+         .td-item {
+           border-bottom:2px solid #E8E8E8 !important;
+         }
+    </style>
+</head>
+<body >
+
+    <div class="contenedor">
+         <table style="width:100%">
+            <tr>
+                <td>
+                    <table >
+                        <tr>
+                            <td>
+                                <p class="title">RANGO DE FECHAS:</p>
+                            </td>
+                            <td>
+                                <p class="title">@ViewBag.DateRange</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <br />
+
+        <table class="tbproductos" style="width:100%">
+            <thead>
+                <tr>
+                    <th class="tbth" style="width:130px">#</th>
+                    <th class="tbth" style="width:130px">Dueño</th>
+                    <th class="tbth" style="width:130px">Mascota</th>
+                    <th class="tbth" style="width:130px">Fecha de adopcion</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    @foreach (var adoption in Model)
+                    {
+                        <tr>
+                            <td>@adoption.IdAdoption</td>
+                            <td>@adoption.UserName</td>
+                            <td>@adoption.PetName</td>
+                            <td>@adoption.RegisterAdoption.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                }          
+            </tbody>
+        </table>
+       
+    </div>
+
+</body>
+</html>

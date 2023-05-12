@@ -1,5 +1,8 @@
 ﻿using FurryFriendFinder.Models;
+using FurryFriendFinder.Models.Data;
+using FurryFriendFinder.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace FurryFriendFinder.Controllers
@@ -8,14 +11,18 @@ namespace FurryFriendFinder.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly FurryFriendFinderDbContext _context;
+
+        public HomeController(ILogger<HomeController> logger, FurryFriendFinderDbContext context)
         {
+            _context = context;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var proyectContext = _context.Publications.Include(p => p.IdUserNavigation);
+            return View(new PubliComment(await _context.Publications.ToListAsync(), await _context.Comments.ToListAsync()));
         }
 
         public IActionResult Privacy()
