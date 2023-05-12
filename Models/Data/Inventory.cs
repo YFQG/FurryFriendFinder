@@ -11,7 +11,7 @@ public partial class Inventory
 
     public int IdProduct { get; set; }
 
-    public virtual Product IdProductNavigation { get; set; } = null!;
+    public virtual Product? IdProductNavigation { get; set; } = null!;
 
-    public virtual ICollection<Movement> Movements { get; set; } = new List<Movement>();
+    public virtual ICollection<Movement>? Movements { get; set; } = new List<Movement>();
 }

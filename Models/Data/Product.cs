@@ -15,13 +15,13 @@ public partial class Product
 
     public int IdBrand { get; set; }
 
-    public virtual AnimalType IdAnimalTypeNavigation { get; set; } = null!;
+    public virtual AnimalType? IdAnimalTypeNavigation { get; set; } = null!;
 
-    public virtual Brand IdBrandNavigation { get; set; } = null!;
+    public virtual Brand? IdBrandNavigation { get; set; } = null!;
 
-    public virtual Packing IdPackingNavigation { get; set; } = null!;
+    public virtual Packing? IdPackingNavigation { get; set; } = null!;
 
-    public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
+    public virtual ICollection<Inventory>? Inventories { get; set; } = new List<Inventory>();
 
-    public virtual ICollection<Movement> Movements { get; set; } = new List<Movement>();
+    public virtual ICollection<Movement>? Movements { get; set; } = new List<Movement>();
 }

@@ -1,0 +1,53 @@
+﻿@using FurryFriendFinder.Models.Data
+@model Pet
+
+@{
+    Layout = "_LayoutPetSitter";
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Pet</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PetImage)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PetImage)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PetName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PetName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BirthYear)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BirthYear)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdAnimalTypeNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdAnimalTypeNavigation.IdAnimalType)
+        </dd>
+    </dl>
+    
+    <form asp-action="PetDelete">
+        <input type="hidden" asp-for="IdPet" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Pets">Back to List</a>
+    </form>
+</div>
