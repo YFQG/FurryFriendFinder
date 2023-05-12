@@ -9,7 +9,7 @@ public partial class User
 
     public string? Name { get; set; }
 
-    public bool? State { get; set; }
+    public bool State { get; set; } = true;
 
     public DateTime? BirthDate { get; set; }
 
