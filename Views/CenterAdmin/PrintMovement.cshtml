@@ -80,7 +80,7 @@
                     <table >
                         <tr>
                             <td>
-                                <p class="title">RANGO DE FECHAS:</p>
+                                <p class="title">Date range:</p>
                             </td>
                             <td>
                                 <p class="title">@ViewData["DataRange"]<p>
@@ -96,10 +96,9 @@
         <table class="tbproductos" style="width:100%">
             <thead>
                 <tr>
-                    <th class="tbth" style="width:130px">#</th>
-                    <th class="tbth" style="width:130px">Producto</th>
-                    <th class="tbth" style="width:130px">Cantidad</th>
-                    <th class="tbth" style="width:130px">Tipo Movimiento</th>
+                    <th class="tbth" style="width:130px">Product</th>
+                    <th class="tbth" style="width:130px">Quantity</th>
+                    <th class="tbth" style="width:130px">Movement type</th>
                 </tr>
             </thead>
             <tbody>
@@ -107,7 +106,6 @@
                     foreach (var item in Model)
                     {
                         <tr>
-                            <td class="td-item"><p class="item">@item.IdMovement</p></td>
                             <td class="td-item"><p class="item">@Html.DisplayFor(modelItem => item.IdProductNavigation.ProductName)</p></td>
                             <td class="td-item"><p class="item">@item.Quantity</p></td>
                             <td style="background-color:#EDF6F9"><p class="item">@Html.DisplayFor(modelItem => item.MovementTypeString) </p></td>
