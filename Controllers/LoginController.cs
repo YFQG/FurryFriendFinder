@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 using FurryFriendFinder.Models.ViewModels;
 using FurryFriendFinder.Models.LogicModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace FurryFriendFinder.Controllers
 {
-    public enum Rol
+    public enum Rol // Add a enum to set the roles id
     {
         n, SystemAdmin, CenterAdmin, PetSitter, Client
     }
@@ -28,24 +29,22 @@ namespace FurryFriendFinder.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(Access _access)
+        public async Task<IActionResult> Login(Access _access) //Method that recive mapped object from the access class
         {
-            var user = UserValidation(_access.Email, _access.Password);
-            if (user != null)
+            var user = UserValidation(_access.Email, _access.Password); 
+            if (user != null) 
             {
-                var info = _context.Users.Where(u => u.IdUser == user.IdUser).FirstOrDefault();
-                var claims = new List<Claim>
+                var info = _context.Users.Where(u => u.IdUser == user.IdUser).FirstOrDefault(); //Search for the user that match with email and password
+                var claims = new List<Claim> 
                 {
-                    new Claim(ClaimTypes.Name, user.IdUser.ToString()),
+                    new Claim(ClaimTypes.Name, user.IdUser.ToString()), //Create
                     new Claim(ClaimTypes.Email, user.Email)
                 };
-                var permit = (from r in _context.Roles
+                var rol = (from r in _context.Roles
                               where r.IdRole == user.IdRole
-                              select r.RoleType).ToList();
-                foreach (string rol in permit)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, rol));
-                }
+                              select r.RoleType).First();
+
+                claims.Add(new Claim(ClaimTypes.Role, rol));
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -151,12 +150,10 @@ namespace FurryFriendFinder.Controllers
             return RedirectToAction("Login", "Login");
         }
 
-        public Access UserValidation(string email, string password)
+        public Access UserValidation(string email, string password) //returns the occess object that match with the email and password of the form
         {
             return _context.Accesses.Where(u => u.Email == email && u.Password == Encrypt.GetSHA256(password)).FirstOrDefault();
         }
-
-
 
         public IActionResult ForgotPassword()
         {
