@@ -7,6 +7,7 @@ using System.Security.Claims;
 using FurryFriendFinder.Models.ViewModels;
 using FurryFriendFinder.Models.LogicModels;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace FurryFriendFinder.Controllers
 {
@@ -68,32 +69,39 @@ namespace FurryFriendFinder.Controllers
             }
         }
 
+        //defines an action method that returns a view to display the client registration form.
         public IActionResult ClientRegister()
         {
+            //retrieves a list of blood types from the database and adds it to the view bag
+            //to be used in the client registration form.
             ViewBag.Rhs = new SelectList(_context.Rhs, "IdRh", "RhType");
             return View();
         }
 
+        //defines an action method that accepts a User object and several lists of values as parameters and attempts to register a new client.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ClientRegister([Bind("IdUser,Name,BirthDate,IdRh,IdRole,Phones")] User user, List<long> Phones, List<string> Address, List<string> Email, List<string> Password, List<string> RepeatPassword)
+        public async Task<IActionResult> ClientRegister([Bind("IdUser,Name,BirthDate,IdRh,IdRole,Phones")] User user
+            , List<long> Phones, List<string> Address, List<string> Email, List<string> Password, List<string> RepeatPassword)
         {
-            if (ModelState.IsValid && Email.Count > 0)
+            if (ModelState.IsValid && Email.Count > 0) //checks if the model state is valid and if there is at least one email address provided.
             {
                 bool EmailExist = false;
                 bool IncorrectPass = false;
                 foreach (var mail in Email)
                 {
+                    //checks if the current email address already exists in the Accesses table of the database
                     if (_context.Accesses.Where(x => x.Email == mail).FirstOrDefault() != null)
                         EmailExist = true;
                 }
                 int num = 0;
                 if (!EmailExist)
                 {
-                    for (int i = 1; i < Email.Count; i++)
+                    for (int i = (int)Rol.SystemAdmin; i < Email.Count; i++)
                     {
-                        for (int i1 = 0; i1 < Email.Count; i1++)
+                        for (int i1 = (int)Rol.n; i1 < Email.Count; i1++)
                         {
+                            //checks if the current email address is equal to any other email address in the list
                             if (Email[i1] == Email[i] && i1 != i)
                                 EmailExist = true;
                             if (EmailExist)
@@ -107,14 +115,16 @@ namespace FurryFriendFinder.Controllers
                 num = 0;
                 foreach (var Pass in Password)
                 {
+                    //checks if the current password does not match the corresponding repeated password.
                     if (Pass != RepeatPassword[num])
                         IncorrectPass = true;
                     num++;
                 }
-                if (!EmailExist)
+                if (!EmailExist) //indicate that none of the email addresses already exist in the database.
                 {
-                    if (!IncorrectPass)
+                    if (!IncorrectPass) //Indicate that all the passwords and repeated passwords match.
                     {
+                        //Save user, all the phones, the adresses and accesses
                         _context.Add(user);
                         await _context.SaveChangesAsync();
                         foreach (var p in Phones)
