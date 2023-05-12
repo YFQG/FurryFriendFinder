@@ -152,12 +152,11 @@ namespace FurryFriendFinder.Controllers
 
             }
 
-            ViewBag.MessageError = _context.Constants.Where(x => x.Description == "MessageError5").First().Value;
-            // ViewData["IdRole"] = new SelectList(_context.Roles, "IdRole", "RoleType", user.IdRole);
+            ViewBag.MessageError = _context.Constants.Where(x => x.Description == "MessageError5").First().Value;;
             return View(user);
         }
 
-        public async Task<IActionResult> LogOut()
+        public async Task<IActionResult> LogOut() //Close the cookie and return to Login
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Login");
@@ -168,59 +167,62 @@ namespace FurryFriendFinder.Controllers
             return _context.Accesses.Where(u => u.Email == email && u.Password == Encrypt.GetSHA256(password)).FirstOrDefault();
         }
 
-        public IActionResult ForgotPassword()
+        public IActionResult ForgotPassword() // Show the Forgot password view
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> ForgotPassword([FromForm] string email)
+        public async Task<IActionResult> ForgotPassword([FromForm] string email) //Take the email from the form
         {
+            //Search the password realted with this email
             string password = _context.Accesses
                     .Where(a => a.Email == email)
                     .Select(a => a.Password)
                     .FirstOrDefault()?.ToString();
-            if (password == null)
+            if (password == null) //if the query didn´t find a password realted with this email
             {
                 TempData["ErrorMessage"] = "El correo electrónico ingresado no existe.";
                 return RedirectToAction("ForgotPassword", "Login");
             }
+            //Call an async method to send the encrypted password to the password recovery
             var emailSender = new FFFEmail();
             await emailSender.SendEmailAsync(email, "Cambio de contraseña", "Hola, con esta encriptacion puedes ingresarla en el formulario que se te ha desplegado despues" +
                 $" de enviar el correo.\n Encriptacion: {password}");
 
-            return RedirectToAction("PasswordRecovery");
+            return RedirectToAction("PasswordRecovery"); //Send the user to the password recovery view
         }
 
-        public IActionResult PasswordRecovery()
+        public IActionResult PasswordRecovery() //Show password recovery view
         {
             return View();
         }
 
+        //Take the encrypt password sended to the email and the new password with the confirmation of it
         [HttpPost]
-        public async Task<IActionResult> PasswordRecovery(string encrypt, string password, string confirmation)
+        public async Task<IActionResult> PasswordRecovery(string encrypt, string password, string confirmation) 
         {
-            if (password != confirmation)
+            if (password != confirmation) // if the new password didn´t match with the cofirmation go back to the view
             {
                 TempData["ErrorMessage"] = "Las contraseñas no coinciden.";
                 return RedirectToAction("PasswordRecovery");
             }
 
-            Access access = _context.Accesses.FirstOrDefault(a => a.Password == encrypt);
+            Access access = _context.Accesses.FirstOrDefault(a => a.Password == encrypt); //seacrh for the access information that match with the encripted password
 
-            if (access != null)
+            if (access != null) // If that encrypted password exist, encrypt the new password and update this information
             {
                 access.Password = Encrypt.GetSHA256(password);
                 _context.Update(access);
                 await _context.SaveChangesAsync();
             }
-            else
+            else //if the query is null go back to the view and fill again the inputs
             {
                 TempData["ErrorMessage"] = "El codigo de encriptacion no coindide.";
                 return RedirectToAction("PasswordRecovery");
             }
 
-            return RedirectToAction("Login");
+            return RedirectToAction("Login"); //Go back to login to fill the new information
         }
     }
 }
