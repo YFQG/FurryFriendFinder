@@ -6,6 +6,7 @@ namespace FurryFriendFinder.Controllers
     {
         public IActionResult Index()
         {
+            Console.WriteLine("");
             return View();
         }
     }
