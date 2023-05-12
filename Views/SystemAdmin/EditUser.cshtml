@@ -1,0 +1,395 @@
+﻿@using FurryFriendFinder.Models.Data;
+@model FurryFriendFinder.Models.Data.User
+@inject FurryFriendFinderDbContext _Context
+
+@{
+    Layout = "_LayoutSystemAdmin";
+    ViewData["Title"] = "Edit";
+    var Phones = _Context.Phones.ToList();
+    var Address = _Context.Addresses.ToList();
+    var Access = _Context.Accesses.ToList();
+    Phones = Phones.FindAll(x => x.IdUser == Model.IdUser);
+    Address = Address.FindAll(x => x.IdUser == Model.IdUser);
+    Access = Access.FindAll(x => x.IdUser == Model.IdUser);
+    var I1 = 0;
+    var I2 = 0;
+    var I = 0;
+}
+
+<h1>Edit</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditUser">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdUser" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="State" class="control-label"></label>
+                <input asp-for="State" class="form-control" />
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Rh</label>
+                <select asp-for="IdRh" class="form-control" asp-items="ViewBag.Rhs"></select>
+                <span asp-validation-for="IdRh" class="text-danger"></span>
+            </div>
+            <div class="form-group m-2" id="ListPhones">
+                @foreach (var phon in Phones)
+                {
+                    I++;
+                    <div id="Phone@(I)">
+                        @if(I==1){
+                            <hr />
+                        }
+                        <span>Phone</span>
+                        <input type="number" name="Phones" class="form-control" value="@(phon.Phone1)">
+                        <input type="button" id="BP@(I)" Value="Delete Phone" class="btn btn-danger m-3">
+                        <hr>
+                    </div>
+                    <script>
+                        createPhoneFunction(@I);
+
+                        function createPhoneFunction(n) {
+                            const b = document.getElementById('BP' + n);
+                            if (b != null) {
+                                b.addEventListener("click", function () {
+                                    const p = document.getElementById('Phone' + n);
+
+                                    const div_access = document.createElement('div');
+
+                                    div_access.appendChild(p);
+                                    console.log(div_access);
+                                });
+                            }
+                        }
+                    </script>
+                }
+            </div><input type="button" id="NewPhone" value="New Phone" class="btn btn-info m-2">
+
+
+
+            <div class="form-group m-2" id="ListAddress">
+                @foreach (var ads in Address)
+                {
+                    I1++;
+                    <div id="Address@(I1)">
+                        @if (I1== 1)
+                        {
+                            <hr />
+                        }
+                        <span>Address</span>
+                        <input type="text" name="Address" class="form-control" value="@(ads.Address1)">
+                        <input type="button" id="BAd@(I1)" Value="Delete Address" class="btn btn-danger m-3">
+                        <hr>
+                    </div>
+                    <script>
+                        createAddressFunction(@I1);
+
+                        function createAddressFunction(n) {
+
+                            const b = document.getElementById('BAd' + n);
+                            if (b != null) {
+                                b.addEventListener("click", function () {
+                                    const p = document.getElementById('Address' + n);
+
+                                    const div_access = document.createElement('div');
+
+                                    div_access.appendChild(p);
+                                    console.log(div_access);
+                                });
+                            }
+                        }
+                    </script>
+                }
+        
+            </div><input type="button" id="NewAddress" value="New Address" class="btn btn-success m-2">
+
+
+            <div class="form-group m-2" id="ListAccess">
+                @foreach (var acs in Access)
+                {
+                    I2++;
+                    <div id="Access@(I2)">
+                        @if (I2 == 1)
+                        {
+                            <hr />
+                        }
+                        <span>Email</span>
+                        <input type="text" name="Email" class="form-control" value="@(acs.Email)" required>
+                        <input type="hidden" name="Password1" class="form-control" value="@(acs.Password)" required> 
+                        <span>Role</span>
+                        <input type="number" name="Role" class="form-control" value="@(acs.IdRole)" required>
+                        <input type="button" id="BAc@(I2)" Value="Delete Access" class="btn btn-danger m-3">
+                        <hr>
+                    </div>
+                    <script>
+                        createAccessFunction(@I2);
+
+                        function createAccessFunction(n) {
+
+                            const b = document.getElementById('BAc' + n);
+                            if (b != null) {
+                                b.addEventListener("click", function () {
+                                    const p = document.getElementById('Access' + n);
+
+                                    const div_access = document.createElement('div');
+
+                                    div_access.appendChild(p);
+                                    console.log(div_access);
+                                });
+                            }
+                        }
+                    </script>
+                }
+            </div><input type="button" id="NewAccess" value="New Access" class="btn btn-warning m-2">
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="User">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        var i1 = @I1;
+        var i2 = @I2;
+        var i = @I;
+        const btn_agregarAccess = document.getElementById('NewAccess');
+        btn_agregarAccess.addEventListener("click", function () {
+            i2++;
+            const div_Paccess = document.getElementById('ListAccess');
+            
+            const div_principal = document.createElement('div');
+            //crear el div para el span e input del nombre
+            const div_Access = document.createElement('div');
+            div_Access.id = 'Access' + i2;
+            //crear el div para el span e input del apellido
+
+            //crear los span de nombre y apellido
+            const span1_Access = document.createElement('span');
+            span1_Access.innerHTML = 'Email';
+
+
+
+            const input1_Access = document.createElement('input');
+            input1_Access.type = 'text';
+            input1_Access.name = 'Email';
+            input1_Access.className = 'form-control';
+            input1_Access.required = "true";
+
+            const span_Access = document.createElement('span');
+            span_Access.innerHTML = 'Password';
+
+
+
+            const input_Access = document.createElement('input');
+            input_Access.type = 'Password';
+            input_Access.name = 'Password';
+            input_Access.className = 'form-control';
+            input_Access.required = "true";
+
+            const span2_Access = document.createElement('span');
+            span2_Access.innerHTML = 'Role';
+
+
+
+            const input2_Access = document.createElement('input');
+            input2_Access.id = 'Role' + i2;
+            input2_Access.name = 'Role';
+            input2_Access.type = 'number';
+            input2_Access.className = 'form-control ';
+            input2_Access.required = "true";
+
+
+
+
+            const Button_Access = document.createElement('input');
+            Button_Access.id = 'BAc' + i2;
+            Button_Access.type = 'button';
+            Button_Access.value = 'Delete Access';
+            Button_Access.className = 'btn btn-danger m-3';
+
+
+            const hr_Access = document.createElement('hr');
+            const hr1_Access = document.createElement('hr');
+
+            if (i2 == 1) {
+                div_Access.appendChild(hr_Access);
+            }
+            div_Access.appendChild(span1_Access);
+            div_Access.appendChild(input1_Access);
+            div_Access.appendChild(span_Access);
+            div_Access.appendChild(input_Access);
+            div_Access.appendChild(span2_Access);
+            div_Access.appendChild(input2_Access);
+            div_Access.appendChild(Button_Access);
+            div_Access.appendChild(hr1_Access);
+
+
+            div_Paccess.appendChild(div_Access);
+
+
+            createAccessFunction(i2);
+        });
+
+
+
+
+        function createAccessFunction(n) {
+
+            const b = document.getElementById('BAc' + n);
+            if (b != null) {
+                b.addEventListener("click", function () {
+                    const p = document.getElementById('Access' + n);
+
+                    const div_access = document.createElement('div');
+
+                    div_access.appendChild(p);
+                    console.log(div_access);
+                });
+            }
+        }
+        const btn_agregarAddress = document.getElementById('NewAddress');
+        btn_agregarAddress.addEventListener("click", function () {
+            i1++;
+            const div_Paddress = document.getElementById('ListAddress');
+            //crear el div que contiene los 2 sub-divs
+            const div_principal = document.createElement('div');
+            //crear el div para el span e input del nombre
+            const div_Address = document.createElement('div');
+            div_Address.id = 'Address' + i1;
+            //crear el div para el span e input del apellido
+
+            //crear los span de nombre y apellido
+            const span_Address = document.createElement('span');
+            span_Address.innerHTML = 'Address';
+
+
+
+            const input_Address = document.createElement('input');
+            input_Address.type = 'text';
+            input_Address.name = 'Address';
+            input_Address.className = 'form-control';
+
+
+            const Button_Address = document.createElement('input');
+            Button_Address.id = 'BAd' + i1;
+            Button_Address.type = 'button';
+            Button_Address.value = 'Delete Address';
+            Button_Address.className = 'btn btn-danger m-3';
+
+            const hr1_Address = document.createElement('hr');
+            const hr_Address = document.createElement('hr');
+
+
+            if (i1 == 1) {
+                div_Address.appendChild(hr1_Address);
+            }
+            div_Address.appendChild(span_Address);
+            div_Address.appendChild(input_Address);
+            div_Address.appendChild(Button_Address);
+            div_Address.appendChild(hr_Address);
+
+            div_Paddress.appendChild(div_Address);
+
+
+            createAddressFunction(i1);
+        });
+
+        function createAddressFunction(n) {
+
+            const b = document.getElementById('BAd' + n);
+            if (b != null) {
+                b.addEventListener("click", function () {
+                    const p = document.getElementById('Address' + n);
+
+                    const div_access = document.createElement('div');
+
+                    div_access.appendChild(p);
+                    console.log(div_access);
+                });
+            }
+        }
+        const btn_agregar = document.getElementById('NewPhone');
+        btn_agregar.addEventListener("click", function () {
+            i++;
+            const div_Pphone = document.getElementById('ListPhones');
+            //crear el div que contiene los 2 sub-divs
+            const div_principal = document.createElement('div');
+            //crear el div para el span e input del nombre
+            const div_Phone = document.createElement('div');
+            div_Phone.id = 'Phone' + i;
+            //crear el div para el span e input del apellido
+
+            //crear los span de nombre y apellido
+            const span_Phone = document.createElement('span');
+            span_Phone.innerHTML = 'Phone';
+
+
+
+            const input_Phone = document.createElement('input');
+            input_Phone.type = 'number';
+            input_Phone.name = 'Phones';
+            input_Phone.className = 'form-control';
+
+
+            const Button_Phone = document.createElement('input');
+            Button_Phone.id = 'BP' + i;
+            Button_Phone.type = 'button';
+            Button_Phone.value = 'Delete Phone';
+            Button_Phone.className = 'btn btn-danger m-3';
+
+            const hr_Phone = document.createElement('hr');
+            const hr1_Phone = document.createElement('hr');
+
+
+            if (i == 1) {
+                div_Phone.appendChild(hr1_Phone);
+            }
+            div_Phone.appendChild(span_Phone);
+            div_Phone.appendChild(input_Phone);
+            div_Phone.appendChild(Button_Phone);
+            div_Phone.appendChild(hr_Phone);
+
+            div_Pphone.appendChild(div_Phone);
+
+
+            createPhoneFunction(i);
+        });
+
+        function createPhoneFunction(n) {
+
+            const b = document.getElementById('BP' + n);
+            if (b != null) {
+                b.addEventListener("click", function () {
+                    const p = document.getElementById('Phone' + n);
+
+                    const div_access = document.createElement('div');
+
+                    div_access.appendChild(p);
+                    console.log(div_access);
+                });
+            }
+        }
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
