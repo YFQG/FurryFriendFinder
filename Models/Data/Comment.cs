@@ -15,7 +15,7 @@ public partial class Comment
 
     public int IdPublication { get; set; }
 
-    public virtual Publication IdPublicationNavigation { get; set; } = null!;
+    public virtual Publication? IdPublicationNavigation { get; set; } = null!;
 
-    public virtual User IdUserNavigation { get; set; } = null!;
+    public virtual User? IdUserNavigation { get; set; } = null!;
 }
