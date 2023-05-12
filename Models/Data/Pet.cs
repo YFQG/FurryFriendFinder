@@ -21,9 +21,9 @@ public partial class Pet
 
     public int? IdBreed { get; set; }
 
-    public virtual ICollection<Adoption> Adoptions { get; set; } = new List<Adoption>();
+    public virtual ICollection<Adoption>? Adoptions { get; set; } = new List<Adoption>();
 
-    public virtual ICollection<AppointmentUser> AppointmentUsers { get; set; } = new List<AppointmentUser>();
+    public virtual ICollection<AppointmentUser>? AppointmentUsers { get; set; } = new List<AppointmentUser>();
 
     public virtual AnimalType? IdAnimalTypeNavigation { get; set; }
 
@@ -31,5 +31,5 @@ public partial class Pet
 
     public virtual StateHealth? IdStateHealthNavigation { get; set; }
 
-    public virtual ICollection<Vaccine> Vaccines { get; set; } = new List<Vaccine>();
+    public virtual ICollection<Vaccine>? Vaccines { get; set; } = new List<Vaccine>();
 }

@@ -19,5 +19,5 @@ public partial class Movement
 
     public virtual Inventory? IdInventaryNavigation { get; set; }
 
-    public virtual Product IdProductNavigation { get; set; } = null!;
+    public virtual Product? IdProductNavigation { get; set; } = null!;
 }
