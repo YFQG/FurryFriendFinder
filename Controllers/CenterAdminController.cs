@@ -35,7 +35,7 @@ namespace FurryFriendFinder.Controllers
                         IdProduct = m.IdProduct,
                         Quantity = m.Quantity,
                         MovementType = m.MovementType,
-                        MovementTypeString = m.MovementType == true ? "Entrada" : "Salida",
+                        MovementTypeString = m.MovementType == true ? "In" : "Out",
                         IdProductNavigation = m.IdProductNavigation // Include the Product entity reference
                     })
                     .ToList();
