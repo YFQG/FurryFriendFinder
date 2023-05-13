@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using FurryFriendFinder.Models.Data;
 using FurryFriendFinder.Models.LogicModels;
 using FurryFriendFinder.Models.ViewModels;
+using static System.Net.Mime.MediaTypeNames;
+
 namespace FurryFriendFinder.Controllers
 {
 
@@ -325,7 +327,7 @@ namespace FurryFriendFinder.Controllers
             {
                 IdUser = Id
             };
-            return View();
+            return View(publication);
         }
 
         /*
@@ -334,7 +336,7 @@ namespace FurryFriendFinder.Controllers
         */
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PetsLostCreate([Bind("IdPublication,Desription,Date,Image,IdUser")] Publication publication, IFormFile Imagee)
+        public async Task<IActionResult> PetsLostCreate([Bind("IdPublication,Description,Date,Image,IdUser")] Publication publication, IFormFile Imagee)
         {
 
             if (Id == 0)
@@ -392,7 +394,7 @@ namespace FurryFriendFinder.Controllers
         */
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PetsLostEdit(int id, [Bind("IdPublication,Desription,Date,Image,IdUser")] Publication publication)
+        public async Task<IActionResult> PetsLostEdit(int id, [Bind("IdPublication,Description,Date,Image,IdUser")] Publication publication,IFormFile? Imagee)
         {
             if (Id == 0)
             {
@@ -412,6 +414,11 @@ namespace FurryFriendFinder.Controllers
             {
                 try
                 {
+                  if (Imagee!=null) {
+                    var stream = new MemoryStream();
+                    Imagee.CopyTo(stream);
+                    publication.Image = stream.ToArray();
+                }
                     _context.Update(publication);
                     await _context.SaveChangesAsync();
                 }
@@ -590,7 +597,7 @@ namespace FurryFriendFinder.Controllers
         {
             var proyectContext = _context.Publications.Include(p => p.IdUserNavigation);
             var comments = _context.Comments.Include(p => p.IdUserNavigation);
-            return View(new PubliComment(await proyectContext.ToListAsync(), await comments.ToListAsync()));
+            return View(new PubliComment(await proyectContext.ToListAsync(), await comments.ToListAsync()) { id=Id});
         }
 
         public async Task<IActionResult> Appointments()
