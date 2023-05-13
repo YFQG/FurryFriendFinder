@@ -23,54 +23,60 @@ namespace FurryFriendFinder.Controllers
             [HttpPost]
             public async Task<IActionResult> AdoptionCertificate([FromForm] string user, [FromForm] string pet)
             {
-                Models.Data.User oUser = _context.Users
+                var validate = _context.Adoptions.Where(a => a.IdPetNavigation.PetName == pet).FirstOrDefault();
+
+                if (validate == null)
+                {
+                    Models.Data.User oUser = _context.Users
                     .Include(p => p.Accesses)
                     .Include(p => p.Addresses)
                     .Include(p => p.Phones)
                     .FirstOrDefault(u => u.Name == user);
-                Pet oPet = _context.Pets.FirstOrDefault(p => p.PetName == pet);
+                    Pet oPet = _context.Pets.FirstOrDefault(p => p.PetName == pet);
 
-                DateTime currentDate = DateTime.Today;
-                AdoptionDate adoptionDate = _context.AdoptionDates.FirstOrDefault(ad => ad.RegisterAdoption.HasValue && ad.RegisterAdoption.Value.Date == currentDate);
+                    DateTime currentDate = DateTime.Today;
+                    AdoptionDate adoptionDate = _context.AdoptionDates.FirstOrDefault(ad => ad.RegisterAdoption.HasValue && ad.RegisterAdoption.Value.Date == currentDate);
 
-                if (oUser != null && oPet != null)
-                {
-                    Certificate model = new Certificate();
-                    model.User = oUser;
-                    model.Pet = oPet;
-
-                Adoption adoption = new Adoption()
-                {
-                    IdUserNavigation = oUser,
-                    IdPetNavigation = oPet
-                };
-
-                    if (adoptionDate == null)
+                    if (oUser != null && oPet != null)
                     {
-                    adoptionDate = new AdoptionDate
+                        Certificate model = new Certificate();
+                        model.User = oUser;
+                        model.Pet = oPet;
+
+                    Adoption adoption = new Adoption()
                     {
-                        RegisterAdoption = currentDate
+                        IdUserNavigation = oUser,
+                        IdPetNavigation = oPet
                     };
-                    adoption.IdAdoptionDateNavigation = adoptionDate;
-                    _context.Add(adoptionDate);
-                    }
-                    _context.Add(adoption);
-                    await _context.SaveChangesAsync();
 
-                    return new ViewAsPdf("AdoptionCertificate", model)
-                    {
-                        FileName = $"{oUser.Name}AdoptionCertificate.pdf",
-                        PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
-                        PageSize = Rotativa.AspNetCore.Options.Size.A4,
-                        ViewData = ViewData
+                        if (adoptionDate == null)
+                        {
+                            adoptionDate = new AdoptionDate
+                            {
+                                RegisterAdoption = currentDate
+                            };
+                        adoption.IdAdoptionDateNavigation = adoptionDate;
+                        _context.Add(adoptionDate);
+                        }
+                        _context.Add(adoption);
+                        await _context.SaveChangesAsync();
+
+                        return new ViewAsPdf("AdoptionCertificate", model)
+                        {
+                            FileName = $"{oUser.Name}AdoptionCertificate.pdf",
+                            PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
+                            PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                            ViewData = ViewData
                         
-                    };
-                }
-                else
-                {
-                    return RedirectToAction("Pets");
-                }
-            }
+                        };
+                    }
+                    else
+                    {
+                        return RedirectToAction("Pets");
+                    }
+                }else return RedirectToAction("Pets");
+
+        }
 
             public async Task<IActionResult> CreateAdoption(int? id)
             {
