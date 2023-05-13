@@ -38,7 +38,10 @@
             }
             <div class="form-group">
                @* Insert image of the pet*@
+               @if(Model.pet.PetImage != null){
                 <img class="card-img-top w-50 m-2" src="data:image/png;base64,@Convert.ToBase64String(Model.pet.PetImage)" />
+               }
+                
                 <input type="file" class="form-control" name="PetImagee" accept="image/png, .jpeg, .jpg, image/gif" multiple onclick="SeeImage()" />
 
             </div>

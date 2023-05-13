@@ -18,8 +18,11 @@
             </div>
         <div class="row">
             <div class="col-md-4">
-                <img class="w-25" src="data:image/png;base64,@Convert.ToBase64String(Model.Pet.PetImage)"
+                    @if(Model.Pet.PetImage != null)
+                    {
+                        <img class="w-25" src="data:image/png;base64,@Convert.ToBase64String(Model.Pet.PetImage)"
                      alt="Mascota" >
+                    }
             </div>
                 <div style="position:absolute;margin-left:600px;margin-top:-290px">
                     <p><strong>Pet</strong></p>
