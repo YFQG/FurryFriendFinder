@@ -64,9 +64,9 @@ namespace FurryFriendFinder.Controllers
                         };
                     }
                     else
-                        ViewBag.MessageError = constans.Find(x => x.Description == "MessageError9");
+                        ViewBag.MessageError = constans.Find(x => x.Description == "MessageError9").Value;
             } else
-                ViewBag.MessageError = constans.Find(x => x.Description == "MessageError10");
+                ViewBag.MessageError = constans.Find(x => x.Description == "MessageError10").Value;
             return View();
             
         }
