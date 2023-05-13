@@ -191,9 +191,9 @@ namespace FurryFriendFinder.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> InventoryCreate([Bind("IdInventory,Quantity,IdProduct")] Inventory inventory, Product product, AnimalType type, Brand brand, Packing packing, Movement movement)
+        public async Task<IActionResult> InventoryCreate([Bind("IdInventory,Quantity,IdProduct")] Inventory inventory, Product product, 
+            AnimalType type, Brand brand, Packing packing, Movement movement)
         {
-
             var zero = Convert.ToInt32(_context.Constants.Where(x => x.Description == "Zero").First().Value);
             if (type is null || inventory.Quantity is null)
                 {
@@ -205,7 +205,7 @@ namespace FurryFriendFinder.Controllers
                     var b1 = _context.Brands.Where(x => x.NameBrand == brand.NameBrand).FirstOrDefault();
                     var p2 = _context.Packings.Where(x => x.TypePacking == packing.TypePacking).FirstOrDefault();
                     var a = _context.AnimalTypes.Where(x => x.Type == type.Type).FirstOrDefault();
-                    bool nuevo = false;
+                    bool lastest = false;
 
                         var p1 = new Product();
                         if (b1 is not null && p2 is not null && a is not null)
@@ -216,7 +216,7 @@ namespace FurryFriendFinder.Controllers
                         {
                             _context.Add(brand);
                             _context.SaveChanges();
-                            nuevo = true;
+                            lastest = true;
                         }
                         else
                         {
@@ -226,7 +226,7 @@ namespace FurryFriendFinder.Controllers
                         {
                             _context.Add(packing);
                             _context.SaveChanges();
-                            nuevo = true;
+                            lastest = true;
                         }
                             else
                         {
@@ -236,15 +236,15 @@ namespace FurryFriendFinder.Controllers
                         {
                             _context.Add(type);
                             _context.SaveChanges();
-                            nuevo = true;
+                            lastest = true;
                         }
                             else
                         {
                             type = a;
                         }
                         if (p1 is null)
-                            nuevo = true;
-                        if (nuevo)
+                            lastest = true;
+                        if (lastest)
                         {
 
                             product.IdBrand = brand.IdBrand;
@@ -258,31 +258,20 @@ namespace FurryFriendFinder.Controllers
                             movement.IdProduct = product.IdProduct;
                             movement.IdInventary = inventory.IdInventory;
                         }
-
+                        if (movement.Date == default) movement.Date = DateTime.Today;
                         movement.Quantity = inventory.Quantity;
-                        if (!nuevo)
+                        if (!lastest)
                         {
-
                             var inv = _context.Inventories.Where(x => x.IdProduct == p1.IdProduct).First();
-
-                            movement.IdProduct = p1.IdProduct;
                             movement.IdInventary = inv.IdInventory;
+                            movement.IdProduct = p1.IdProduct;
                             inv.Quantity += inventory.Quantity;
                             _context.Update(inv);
                             await _context.SaveChangesAsync();
-                            if (inventory.Quantity < zero)
-                            {
-                                movement.MovementType = false;
-                                _context.Add(movement);
-                            }
-
+                            if (inventory.Quantity < zero) movement.MovementType = false;
                         }
-                        if (inventory.Quantity >= zero)
-                        {
-                            movement.MovementType = true;
-                            _context.Add(movement);
-                        }
-
+                        if (inventory.Quantity >= zero) movement.MovementType = true;
+                        _context.Add(movement);
                         await _context.SaveChangesAsync();
                         return RedirectToAction(nameof(Inventories));
                     }
@@ -379,8 +368,6 @@ namespace FurryFriendFinder.Controllers
 
                         foreach (var p in Vaccine)
                         {
-
-                            // _context.Vaccines.Add(new Vaccine {  TypeVaccine = p, IdPetNavigation = pet });
                             _context.Vaccines.Add(new Vaccine { TypeVaccine = Vaccine[num], VaccinationDate = VaccinationDate[num], IdPetNavigation = pet });
                             num++;
                         }
