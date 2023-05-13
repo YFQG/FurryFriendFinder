@@ -35,9 +35,13 @@
         <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Image)
             </dt>
-        <dd class="col-sm-9">
-                <img class="card-img-top w-25" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" />
-           
+            <dd class="col-sm-9">
+
+                @if (Model.Image != null)
+                {
+                    <img class="card-img-top w-25" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" />
+                }
+
             </dd>
                 }
         <dt class="col-sm-3">
