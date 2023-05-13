@@ -79,7 +79,7 @@
                     <table >
                         <tr>
                             <td>
-                                <p class="title">RANGO DE FECHAS:</p>
+                                <p class="title">Date range:</p>
                             </td>
                             <td>
                                 <p class="title">@ViewBag.DateRange</p>
@@ -95,10 +95,9 @@
         <table class="tbproductos" style="width:100%">
             <thead>
                 <tr>
-                    <th class="tbth" style="width:130px">#</th>
-                    <th class="tbth" style="width:130px">Dueño</th>
-                    <th class="tbth" style="width:130px">Mascota</th>
-                    <th class="tbth" style="width:130px">Fecha de adopcion</th>
+                    <th class="tbth" style="width:130px">Owner</th>
+                    <th class="tbth" style="width:130px">Pet</th>
+                    <th class="tbth" style="width:130px">Adoption Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -106,7 +105,6 @@
                     @foreach (var adoption in Model)
                     {
                         <tr>
-                            <td>@adoption.IdAdoption</td>
                             <td>@adoption.UserName</td>
                             <td>@adoption.PetName</td>
                             <td>@adoption.RegisterAdoption.ToString("yyyy-MM-dd")</td>

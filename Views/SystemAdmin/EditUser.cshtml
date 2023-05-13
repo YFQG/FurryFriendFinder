@@ -5,12 +5,6 @@
 @{
     Layout = "_LayoutSystemAdmin";
     ViewData["Title"] = "Edit";
-    var Phones = _Context.Phones.ToList();
-    var Address = _Context.Addresses.ToList();
-    var Access = _Context.Accesses.ToList();
-    Phones = Phones.FindAll(x => x.IdUser == Model.IdUser);
-    Address = Address.FindAll(x => x.IdUser == Model.IdUser);
-    Access = Access.FindAll(x => x.IdUser == Model.IdUser);
     var I1 = 0;
     var I2 = 0;
     var I = 0;
@@ -22,7 +16,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EditUser">
+        <form asp-action="EditUser" asp-controller="SystemAdmin">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IdUser" />
             <div class="form-group">
@@ -46,7 +40,7 @@
                 <span asp-validation-for="IdRh" class="text-danger"></span>
             </div>
             <div class="form-group m-2" id="ListPhones">
-                @foreach (var phon in Phones)
+                @foreach (var phon in Model.Phones)
                 {
                     I++;
                     <div id="Phone@(I)">
@@ -81,7 +75,7 @@
 
 
             <div class="form-group m-2" id="ListAddress">
-                @foreach (var ads in Address)
+                @foreach (var ads in Model.Addresses)
                 {
                     I1++;
                     <div id="Address@(I1)">
@@ -118,7 +112,7 @@
 
 
             <div class="form-group m-2" id="ListAccess">
-                @foreach (var acs in Access)
+                @foreach (var acs in Model.Accesses)
                 {
                     I2++;
                     <div id="Access@(I2)">
