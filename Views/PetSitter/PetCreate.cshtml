@@ -15,7 +15,7 @@
         <form asp-action="PetCreate" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                @*Inserto imagen*@
+                @*Image insert*@
 
                 <input type="file" class="form-control" name="PetImagee" accept="image/png, .jpeg, .jpg, image/gif" multiple onclick="SeeImage()" />
                 @if (ViewBag.MessageError != null)
@@ -28,9 +28,10 @@
                 <input asp-for="pet.PetName" class="form-control" />
                 <span asp-validation-for="pet.PetName" class="text-danger"></span>
             </div>
-
+            <!--Input field for the Gender-->
             <div class="form-group">
                 <label asp-for="pet.Gender" class="control-label"></label>
+<!--Input field for the BirthYear-->
                 <select asp-for="pet.Gender" class="form-control" asp-items="ViewBag.GenderValues"></select>
             </div>
             <div class="form-group">
@@ -38,14 +39,17 @@
                 <input asp-for="pet.BirthYear" class="form-control" />
                 <span asp-validation-for="pet.BirthYear" class="text-danger"></span>
             </div>
+            <!--Input field for the IdAnimalType-->
             <div class="form-group">
                 <label class="control-label">Animal type</label>
                 <select asp-for="pet.IdAnimalType" class="form-control" asp-items="ViewBag.IdAnimalType"></select>
             </div>
+            <!--Input field for the IdBreed-->
             <div class="form-group">
                 <label class="control-label">Breed</label>
                 <select asp-for="pet.IdBreed" class="form-control" asp-items="ViewBag.IdBreed"></select>
             </div>
+            <!--Input field for the Castrated-->
             <div class="form-group">
                 <label class="control-label">Castrated</label>
                 <select  class="form-control" asp-items="ViewBag.CastratedValues" name="castrated"></select>
@@ -83,26 +87,26 @@
         var i1 = 0;
         var i2 = 0;
         var i = 0;
-
+        // Get the button with the id 'NewVaccine'
         const btn_agregarVaccine = document.getElementById('NewVaccine');
         btn_agregarVaccine.addEventListener("click", function () {
             i2++;
+            // Obtener el div con el id 'ListVaccine'
             const div_Paddress = document.getElementById('ListVaccine');
-                     //crear el div que contiene los 2 sub-divs
+            // Create the main div that will contain the sub-divs
             const div_principal = document.createElement('div');
-            //crear el div para el span e input del nombre
+            // Create the div for the vaccine name span and input
             const div_Vaccine = document.createElement('div');
             div_Vaccine.id = 'Vaccine' + i2;
-            //crear el div para el span e input del apellido
 
-            //crear los span de nombre y apellido
+             // Create input for vaccine name
             const span1_Vaccine = document.createElement('span');
             span1_Vaccine.innerHTML = 'TypeVaccine';
 
-       
 
 
 
+            // Create input for vaccine name
             const input1_Vaccine = document.createElement('input');
             input1_Vaccine.type = 'text';
             input1_Vaccine.name = 'Vaccine';
@@ -110,12 +114,12 @@
          
 
             @*Date*@
-            
+                    // Create the span for the vaccination date
             
                 const span2_Vaccine = document.createElement('span');
                 span2_Vaccine.innerHTML = 'VaccinationDate';
 
-
+            // Create input for vaccination date
 
                 const input2_Vaccine = document.createElement('input');
                 input2_Vaccine.type = 'datetime-local';
@@ -124,17 +128,17 @@
         
                 input2_Vaccine.className = 'form-control ';
                input2_Vaccine.required="true";
-            
-            
 
 
 
+
+            // Create the button to remove the vaccine
             const Button_Vaccine = document.createElement('input');
             Button_Vaccine.id = 'BAd' + i2;
             Button_Vaccine.type = 'button';
             Button_Vaccine.value = 'Delete Vaccine';
             Button_Vaccine.className = 'btn btn-danger m-3';
-
+            // Create hr elements to visually separate
 
             const hr1_Vaccine = document.createElement('hr');
             const hr_Vaccine = document.createElement('hr');
@@ -143,6 +147,7 @@
             if (i2 == 1) {
                 div_Vaccine.appendChild(hr1_Vaccine);
             }
+            // Add created items to vaccine div
             div_Vaccine.appendChild(span1_Vaccine);
             div_Vaccine.appendChild(input1_Vaccine);
             
@@ -153,7 +158,7 @@
 
             div_Vaccine.appendChild(Button_Vaccine);
             div_Vaccine.appendChild(hr_Vaccine);
-                   
+            // Add vaccine div to main div
 
             div_Paddress.appendChild(div_Vaccine);
             
@@ -161,6 +166,7 @@
             createVaccineFunction(i2);
                               
         });
+        // Function to add the event listener to the vaccine removal button
         function createVaccineFunction(n) {
 
             const b = document.getElementById('BAd' + n);
@@ -168,6 +174,7 @@
                 b.addEventListener("click", function () {
                     const p = document.getElementById('Vaccine' + n);
 
+                    // Create a new div to store the vaccine div removed
                     const div_access = document.createElement('div');
 
                     div_access.appendChild(p);

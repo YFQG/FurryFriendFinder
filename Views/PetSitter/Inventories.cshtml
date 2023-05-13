@@ -5,14 +5,16 @@
     Layout = "_LayoutPetSitter";
     ViewData["Title"] = "Index";
 }
+<!--Link to create a new movement-->
 <a asp-action="InventoryCreate">Make Movement</a>
 
 
 <h1>Index</h1>
-
+<!--Table to show inventory records-->
 <table class="table">
     <thead>
         <tr>
+            <!--column headers-->
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
             </th>
@@ -32,6 +34,7 @@
         </tr>
     </thead>
     <tbody>
+        <!--Iterate over each element of the model-->
         @foreach (var item in Model)
         {
             <tr>
@@ -51,6 +54,7 @@
                     @(item.IdProductNavigation.IdAnimalTypeNavigation.Type)
                 </td>
                 <td>
+                    <!--Links to view details and create a new movement for each record-->
                     <a asp-action="InventoryDetails" asp-route-id="@item.IdInventory">Details</a> |
                     <a asp-action="InventoryCreate" asp-route-id="@item.IdProduct">Make Movement</a>
                 </td>

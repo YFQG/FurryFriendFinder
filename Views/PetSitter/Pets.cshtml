@@ -1,4 +1,4 @@
-﻿@using FurryFriendFinder.Models.Data
+@using FurryFriendFinder.Models.Data
 @model IEnumerable<FurryFriendFinder.Models.Data.Pet>
 @inject FurryFriendFinderDbContext _context
 @{
@@ -16,8 +16,10 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="PetCreate">Create New</a>
+    <!--Link to create a new item-->
+    <a asp-action="PetCreate">Create New</a> 
 </p>
+
 <div class="row justify-content-center justify-content-md-start4">
     <table class="table">
         <thead>
@@ -51,47 +53,73 @@
                 <th>
                 @Html.DisplayNameFor(model => model.IdStateHealthNavigation.Castrated)
                 </th>
-            
-          
-                <th></th>
             </tr>
         </thead>
         <tbody>
 
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.PetImage != null)<!-- If the pet has an image -->
+                    {
+                        <img style="width:50%;min-width:25%" src="data:image/png;base64,@Convert.ToBase64String(item.PetImage)" />
+                        <!-- Display the pet image -->
+                    }
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.PetName)<!-- Display the pet name -->
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Gender) <!-- Display the pet gender -->
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.BirthYear)<!-- Display the pet birth year -->
+                </td>
+                    <!-- If the pet has adoptions -->
+                <td>@if (item.Adoptions.Count >0)
+                    {
+                        <p>  @AdoptionsDate.Find(x=>(Adoptions.Find(x=>x.IdPet==item.IdPet).IdAdoptionDate)==x.IdAdoptionDate).RegisterAdoption</p>
+                        <!-- Display the adoption date associated with the pet -->
+                    }
 
-            @foreach (var item in Model)
-            {
-                <tr>
+                </td>
+                <!-- Display the animal type of the pet -->
+                <td>
+                    @AnimalType.Find(x=>x.IdAnimalType==item.IdAnimalType).Type
+                </td>
                     <td>
-                        @if (item.PetImage != null)
+                        @if (item.IdBreed != null) <!-- If the pet has a breed -->
+                    {
+
+                        <p>@item.IdBreedNavigation.Breed1</p>
+                        <!-- Display the breed of the pet -->
+                    }
+                </td>
+                <td>
+                    <p>
+                    @StateHealth.Find(x=>x.IdStateHealth==item.IdStateHealth).State</p>
+                </td>
+                <td>
+                @StateHealth.Find(x=>x.IdStateHealth==item.IdStateHealth).Castrated
+                </td>
+             
+                <td>
+                    <div class="row">
+                    <a asp-action="PetEdit" asp-route-id="@item.IdPet" class="col-md-5">Edit</a>
+                    <a asp-action="PetDetails" asp-route-id="@item.IdPet" class="col-md-6">Details</a>
+                    <a asp-action="PetDelete" asp-route-id="@item.IdPet" class="col-md-6">Delete</a>
+                            <!-- If the pet doesn't have any adoptions -->
+                        @if (item.Adoptions.Count == 0)
                         {
-                            <img style="width:50%;min-width:25%" src="data:image/png;base64,@Convert.ToBase64String(item.PetImage)" />
+                            <a asp-action="CreateAdoption" asp-route-id="@item.IdPet" class="col-md-7">Adoption</a>
+                            <!-- Display the option to create an adoption for the pet -->
                         }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PetName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Gender)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.BirthYear)
-                    </td>
-                    <td>@if (item.Adoptions.Count > 0)
-                        {
-                            <p>  @AdoptionsDate.Find(x=>(Adoptions.Find(x=>x.IdPet==item.IdPet).IdAdoptionDate)==x.IdAdoptionDate).RegisterAdoption</p>
-                    
-                        }
-
-                    </td>
-
-                    <td>
-                        @AnimalType.Find(x=>x.IdAnimalType==item.IdAnimalType).Type
-                    </td>
+                    </div>
+                </td>
                         <td>
                             @if (item.IdBreed != null)
                         {
-
                             <p>@item.IdBreedNavigation.Breed1</p>
                         }
                     </td>
@@ -114,13 +142,6 @@
                             }
                         </div>
                     </td>
-
-
-
-
-
-
-
                 </tr>
             }
         </tbody>

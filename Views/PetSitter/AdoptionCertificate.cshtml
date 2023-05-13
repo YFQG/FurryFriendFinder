@@ -1,4 +1,4 @@
-﻿@model FurryFriendFinder.Models.ViewModels.Certificate
+@model FurryFriendFinder.Models.ViewModels.Certificate
 @{
     Layout = "_LayoutEmpty";  
 }
@@ -32,10 +32,12 @@
                 <p><strong>Name:</strong> @Model.User.Name</p>
                     @if (Model.User.Accesses.Count > 0){
                 <p><strong>Correo: </strong>@Model.User.Accesses.First().Email </p>}
+                    <!--Check if the adopter has registered phone numbers-->
                     @if (Model.User.Phones.Count > 0)
                     {
                         <p><strong>Phone: </strong>@Model.User.Phones.First().Phone1</p>
                     }
+                    <!--Check whether the adopter has registered addresses-->
                     @if (Model.User.Addresses.Count > 0)
                     {
                         <p><strong>Address: </strong>@Model.User.Addresses.First().Address1</p>
@@ -47,6 +49,7 @@
         <br />
         <div class="row p-6">
             <div class="col-md-12">
+                <!--Display a message about the adoption certificate-->
                 <p>This certificate is issued as proof of adoption of the previously described pet. 
                     The adopter commits to providing the pet with a safe and loving home, as well as providing 
                     the necessary care for its well-being and happiness.</p>
