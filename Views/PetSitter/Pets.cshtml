@@ -61,7 +61,8 @@
         {
             <tr>
                 <td>
-                    @if (item.PetImage != null)//<!-- If the pet has an image -->
+                        <!--If the pet has an image -->
+                    @if (item.PetImage != null)
                     {
                         <img style="width:50%;min-width:25%" src="data:image/png;base64,@Convert.ToBase64String(item.PetImage)" />
                         <!-- Display the pet image -->
