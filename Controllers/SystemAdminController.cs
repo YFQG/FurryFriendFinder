@@ -35,7 +35,6 @@ namespace FurryFriendFinder.Controllers
 
 
         // GET: Users/Create
-        [AllowAnonymous]
         public IActionResult CreateUser()
         {
             ViewBag.Id_Role = _context.Roles.ToList();
