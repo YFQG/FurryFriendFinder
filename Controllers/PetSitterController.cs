@@ -409,7 +409,7 @@ namespace FurryFriendFinder.Controllers
 
                     foreach (var p in Vaccine)
                         {
-                            _context.Vaccines.Add(new Vaccine { TypeVaccine = Vaccine[num], VaccinationDate = VaccinationDate[num], IdPetNavigation = pet });
+                            _context.Vaccines.Add(new Vaccine { TypeVaccine = Vaccine[num], VaccinationDate = VaccinationDate[num], IdPet = pet.IdPet });
                             num++;
                         }
 
