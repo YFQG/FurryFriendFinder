@@ -99,12 +99,6 @@ namespace FurryFriendFinder.Controllers
                 return Json(userlist);
             }
 
-
-
-
-
-
-
             public IActionResult GetNames(string term)
             {
                 var products = (from u in _context.Products.ToList()
@@ -133,7 +127,6 @@ namespace FurryFriendFinder.Controllers
                                 select new { value = u.NameBrand });
                 return Json(products);
             }
-
 
             public async Task<IActionResult> Inventories()
             {
@@ -301,8 +294,6 @@ namespace FurryFriendFinder.Controllers
                 });
             }
 
-
-
             public async Task<IActionResult> Pets()
             {
                 var proyectPetsContext = _context.Pets
@@ -339,9 +330,10 @@ namespace FurryFriendFinder.Controllers
             // GET: Pets/Create
             public IActionResult PetCreate()
             {
-
-
-
+                var genderValues = new List<string> { "M", "F" };
+                ViewBag.GenderValues = genderValues.Select(g => new SelectListItem { Text = g, Value = g });
+                var castratedValues = new List<string> { "Yes", "No" };
+                ViewBag.CastratedValues = castratedValues.Select(c => new SelectListItem { Text = c, Value = c });
                 ViewData["IdAnimalType"] = new SelectList(_context.AnimalTypes, "IdAnimalType", "Type");
                 ViewData["IdBreed"] = new SelectList(_context.Breeds, "IdBreed", "Breed1");
                 ViewData["IdStateHealth"] = new SelectList(_context.StateHealths, "IdStateHealth", "IdStateHealth");
@@ -353,12 +345,10 @@ namespace FurryFriendFinder.Controllers
             // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
             [HttpPost]
             [ValidateAntiForgeryToken]
-            public async Task<IActionResult> PetCreate([Bind("IdPet,PetImage,PetName,Gender,BirthYear,IdAnimalType,IdAdoption,IdBreed, IdStateHealth")] Pet pet, IFormFile PetImagee, List<string> Vaccine, List<DateTime> VaccinationDate, StateHealth stateHealth)
+            public async Task<IActionResult> PetCreate([Bind("IdPet,PetImage,PetName,Gender,BirthYear,IdAnimalType,IdAdoption,IdBreed, IdStateHealth")] Pet pet, IFormFile PetImagee, 
+                List<string> Vaccine, List<DateTime> VaccinationDate, StateHealth stateHealth, string castrated)
             {
-
-
-
-
+                
                 if (PetImagee != null)
                 {
                     var stream = new MemoryStream();
@@ -368,24 +358,21 @@ namespace FurryFriendFinder.Controllers
 
                     if (ModelState.IsValid)
                     {
+                        if(castrated == "yes") stateHealth.Castrated = true;
+                        else stateHealth.Castrated = false;
+
                         _context.StateHealths.Add(stateHealth);
                         await _context.SaveChangesAsync();
+                        //if(stateHealth.IdStateHealth == "Yes")
                         pet.IdStateHealth = stateHealth.IdStateHealth;
 
-
                         _context.Add(pet);
-
-
 
                         await _context.SaveChangesAsync();
                         var num = 0;
 
-
-
-
                         foreach (var p in Vaccine)
                         {
-
 
                             // _context.Vaccines.Add(new Vaccine {  TypeVaccine = p, IdPetNavigation = pet });
                             _context.Vaccines.Add(new Vaccine { TypeVaccine = Vaccine[num], VaccinationDate = VaccinationDate[num], IdPetNavigation = pet });
@@ -401,8 +388,10 @@ namespace FurryFriendFinder.Controllers
                 else
                     ViewBag.MessageError = "Insert image ";
 
-
-
+                var genderValues = new List<string> { "M", "F" };
+                ViewBag.GenderValues = genderValues.Select(g => new SelectListItem { Text = g, Value = g });
+                var castratedValues = new List<string> { "Yes", "No" };
+                ViewBag.CastratedValues = castratedValues.Select(c => new SelectListItem { Text = c, Value = c });
                 ViewData["IdAnimalType"] = new SelectList(_context.AnimalTypes, "IdAnimalType", "Type", pet.IdAnimalType);
                 ViewData["IdBreed"] = new SelectList(_context.Breeds, "IdBreed", "Breed1", pet.IdBreed);
                 ViewData["IdStateHealth"] = new SelectList(_context.StateHealths, "IdStateHealth", "IdStateHealth", pet.IdStateHealth);
@@ -423,6 +412,10 @@ namespace FurryFriendFinder.Controllers
                 {
                     return NotFound();
                 }
+                var genderValues = new List<string> { "M", "F" };
+                ViewBag.GenderValues = genderValues.Select(g => new SelectListItem { Text = g, Value = g });
+                var castratedValues = new List<string> { "Yes", "No" };
+                ViewBag.CastratedValues = castratedValues.Select(c => new SelectListItem { Text = c, Value = c });
                 ViewData["IdAnimalType"] = new SelectList(_context.AnimalTypes, "IdAnimalType", "Type");
                 ViewData["IdBreed"] = new SelectList(_context.Breeds, "IdBreed", "Breed1");
                 ViewData["IdStateHealth"] = new SelectList(_context.StateHealths, "IdStateHealth", "IdStateHealth", pet.IdStateHealth);
@@ -434,7 +427,8 @@ namespace FurryFriendFinder.Controllers
             // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
             [HttpPost]
             [ValidateAntiForgeryToken]
-            public async Task<IActionResult> PetEdit(int id, [Bind("IdPet,PetImage,PetName,Gender,BirthYear,IdAnimalType,IdAdoption,IdStateHealth,IdBreed")] Pet pet, IFormFile? PetImagee, List<string> Vaccine, List<DateTime> VaccinationDate, StateHealth stateHealth, Breed breed)
+            public async Task<IActionResult> PetEdit(int id, [Bind("IdPet,PetImage,PetName,Gender,BirthYear,IdAnimalType,IdAdoption,IdStateHealth,IdBreed")] Pet pet, 
+                IFormFile? PetImagee, List<string> Vaccine, List<DateTime> VaccinationDate, StateHealth stateHealth, Breed breed, string castrated)
             {
 
                 if (PetImagee != null)
@@ -451,6 +445,8 @@ namespace FurryFriendFinder.Controllers
                 var sthealth = _context.StateHealths.Where(x => x.Castrated == stateHealth.Castrated && x.State == stateHealth.State).First();
                 if (sthealth == null)
                 {
+                    if (castrated == "yes") stateHealth.Castrated = true;
+                    else stateHealth.Castrated = false;
                     _context.StateHealths.Add(stateHealth);
                     await _context.SaveChangesAsync();
 
@@ -505,8 +501,12 @@ namespace FurryFriendFinder.Controllers
                 {
                     ViewBag.MessageError = "The model is not valid ";
             }
-            ViewData["IdBreed"] = new SelectList(_context.Breeds, "IdBreed", "Breed1");
-            ViewData["IdAnimalType"] = new SelectList(_context.AnimalTypes, "IdAnimalType", "IdAnimalType", pet.IdAnimalType);
+                var genderValues = new List<string> { "M", "F" };
+                ViewBag.GenderValues = genderValues.Select(g => new SelectListItem { Text = g, Value = g });
+                var castratedValues = new List<string> { "Yes", "No" };
+                ViewBag.CastratedValues = castratedValues.Select(c => new SelectListItem { Text = c, Value = c });
+                ViewData["IdBreed"] = new SelectList(_context.Breeds, "IdBreed", "Breed1");
+                ViewData["IdAnimalType"] = new SelectList(_context.AnimalTypes, "IdAnimalType", "IdAnimalType", pet.IdAnimalType);
                 ViewData["IdStateHealth"] = new SelectList(_context.StateHealths, "IdStateHealth", "IdStateHealth", pet.IdStateHealth);
                 return View(new extraPet(pet));
             }
