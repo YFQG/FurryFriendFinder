@@ -120,7 +120,7 @@ namespace FurryFriendFinder.Controllers
             }
 
         //The GetNames method takes a term parameter, which represents the search term used to filter products by name.       
-        public IActionResult GetNames(string term)
+        public IActionResult GetNames(string term) { 
                 var products = (from u in _context.Products.ToList()
                                     //Make a LINQ query in the _context. Products collection for a list of products that meet the following criteria:
                                 where u.ProductName.Contains(term, System.StringComparison.CurrentCultureIgnoreCase)
@@ -587,6 +587,7 @@ namespace FurryFriendFinder.Controllers
                 }
             // Find the pet with the specified id
             var pet = await _context.Pets.FindAsync(id);
+
                 if (pet != null)
                 {
                 // Remove the pet from the context

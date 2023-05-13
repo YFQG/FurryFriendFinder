@@ -41,17 +41,16 @@ namespace FurryFriendFinder.Controllers
                     if (info.State == true)
                     {
                         var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, user.IdUser.ToString()), //Create
+                            new Claim(ClaimTypes.Email, user.Email)
+                        };
 
-                {
-                    new Claim(ClaimTypes.Name, user.IdUser.ToString()), //Create
-                    new Claim(ClaimTypes.Email, user.Email)
-                };
+                        var rol = (from r in _context.Roles
+                                      where r.IdRole == user.IdRole
+                                      select r.RoleType).First();
 
-                var rol = (from r in _context.Roles
-                              where r.IdRole == user.IdRole
-                              select r.RoleType).First();
-
-                claims.Add(new Claim(ClaimTypes.Role, rol));
+                        claims.Add(new Claim(ClaimTypes.Role, rol));
 
 
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
