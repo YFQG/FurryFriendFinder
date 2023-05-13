@@ -1,0 +1,53 @@
+﻿@using FurryFriendFinder.Models.Data;
+@model FurryFriendFinder.Models.Data.Publication
+@inject FurryFriendFinderDbContext _context
+
+@{
+    Layout = "_LayoutClient";
+    ViewData["Title"] = "Details";
+     var User = _context.Users.Where(x=>x.IdUser==Model.IdUser).FirstOrDefault();
+    /* var Vacciness = _context.Vaccines.ToList();
+     Vacciness = Vacciness.FindAll(x => x.IdPet == Model.IdPet);
+     var StateHealths = _context.StateHealths.Where(x=>x.IdStateHealth==Model.IdStateHealth).FirstOrDefault();
+     var Adoption = _context.Adoptions.Where(x => x.IdPet == Model.IdPet).FirstOrDefault();*/
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Pet</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.IdUserNavigation.Name)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.IdUserNavigation.Name)
+        </dd>
+        @if (Model.Image != null)
+            {
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Image)
+            </dt>
+        <dd class="col-sm-9">
+                <img class="card-img-top w-25" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" />
+           
+            </dd>
+                }
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.Description
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="PetsLost">Back to List</a>
+</div>

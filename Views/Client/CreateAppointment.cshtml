@@ -1,0 +1,46 @@
+﻿@model FurryFriendFinder.Models.ViewModels.AppointDate
+
+@{
+    Layout = "_LayoutClient";
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>AppointmentUser</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateAppointment">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="appointmentUser.IdUser">
+            </div>
+            <div class="form-group">
+                <label asp-for="appointmentUser.IdPet" class="control-label"></label>
+                <select asp-for="appointmentUser.IdPet" class="form-control" asp-items="ViewBag.IdPet"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Appointment.Date" class="control-label"></label>
+                <input asp-for="Appointment.Date" class ="form-control" asp-items="ViewBag.IdAppointment" type="datetime-local">
+            </div>
+            @if (ViewBag.MessageError != null)
+            {
+                <div class="form-group text-danger">
+                    @ViewBag.MessageError
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Appointments">Back to Appointments</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

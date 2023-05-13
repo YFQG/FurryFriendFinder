@@ -1,9 +1,9 @@
 ﻿@using System.Buffers.Text;
-@using FurryFriendFinder.Models.ViewModels;
 @using FurryFriendFinder.Models.Data;
-@model PubliComment
-@inject FurryFriendFinderDbContext _context;
+@model FurryFriendFinder.Models.ViewModels.PubliComment
+@inject FurryFriendFinderDbContext context
 @{
+    Layout = "_LayoutClient";
     ViewData["Title"] = "Index";
     var model2 = Model.Comment;
     var model1 = Model.publi;
@@ -12,19 +12,30 @@
     float num = 3;
 }
 
-<div class="text-center">
-    <h1>¡Welcome to our family!</h1>
-</div>
-
 
 <p>
+    <a asp-action="PetsLostCreate">Add New Publication</a>
+</p>
+
+<p>
+    @ViewBag.MessageError
 </p>
 <div class="table">
 
                 <div class="row">
 @foreach (var item in Model.publi) {
-            <div class="col-md-4 card">
-                <div class="card-text row">
+            <div class="col-md-4 card"><div>
+                    <a asp-action="PetsLostDetails" asp-route-id="@item.IdPublication">Details</a>
+                    @if (ViewBag.Id != null)
+                    {
+                        @if(ViewBag.Id == item.IdUser)
+                        {
+                           <div> |
+                    <a asp-action="PetsLostEdit" asp-route-id="@item.IdPublication">Edit</a>  |
+                    <a asp-action="PetsLostDelete" asp-route-id="@item.IdPublication">Delete</a></div>
+                        }
+                    }
+                </div><div class="card-text row">
                     <p class="text-primary col-md-4 w-50 ">Date</p>
                     <p class=" col-md-4 w-50">@Html.DisplayFor(modelItem => item.Date)</p>
                 </div>
@@ -44,6 +55,11 @@
                 @Html.DisplayFor(modelItem => item.Description)
                 </p>
                 </div>
+                
+                
+
+                
+
                 <style>
 
                     .moda@(identity){
@@ -87,17 +103,21 @@
                    Show Replies
                 </button>
                 <div class="@(moda+identity)" >
-                    <div class="col-md model-body">
+                 
+
+                
+                
+                <div class="col-md model-body">
+                    <a asp-action="PetsLostMess" asp-route-id="@item.IdPublication" class="btn btn-primary">Reply</a>
                     @foreach(var item1 in model2.FindAll(x => x.IdPublication==item.IdPublication))
                     {
                         <div class="row list-group-item">
                         
                     <div class="row">
-                                    @if (item1.IdUserNavigation == null)
+                                    @if (item1.IdUserNavigation.Name!=null)
                                     {
-                                        item1.IdUserNavigation = (_context).Users.Find(item1.IdUser);
-                                    }
                                     <div class="col-md-9 w-100">@item1.IdUserNavigation.Name</div>
+                                    }
                                     <div class="col w-75 text-primary">
                              @nameof(item1.PublicationDate) :
                                     </div>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace FurryFriendFinder.Models.Data;
 
@@ -10,7 +9,7 @@ public partial class User
 
     public string? Name { get; set; }
 
-    public bool? State { get; set; }
+    public bool? State { get; set; } = true;
 
     public DateTime? BirthDate { get; set; }
 

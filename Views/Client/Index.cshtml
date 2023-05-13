@@ -1,0 +1,70 @@
+﻿@using FurryFriendFinder.Models.Data;
+@model IEnumerable<FurryFriendFinder.Models.Data.Pet>
+@inject FurryFriendFinderDbContext context
+@{
+    Layout = "_LayoutClient";
+    ViewData["Title"] = "Index";
+}
+
+
+
+<div class="table">
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 card">
+                <div>
+
+                    <a asp-action="DetailsPet" asp-route-id="@item.IdPet">Details</a>
+
+                </div><div class="card-text row">
+
+                    <p class="text-primary col-md ">BirthYear</p>
+
+
+                    <p class=" col-md-4 ">@item.BirthYear</p>
+
+                </div>
+
+                @Html.DisplayFor(modelItem => item.PetName)
+
+                <div class="list-group-item col">
+                    @if (item.PetImage != null)
+                    {
+                        <img class="card-img-top " src="data:image/png;base64,@Convert.ToBase64String(item.PetImage)" />
+                    }
+                    </div>
+                <div class="card-texDesription">
+                    @if (item.IdStateHealthNavigation!= null)
+                    {
+
+                        <p class="row">
+                            @item.IdStateHealthNavigation.State
+                        </p>
+                        if (item.IdStateHealthNavigation.Castrated == true)
+                        {
+                            <p class="row">
+                                <span>He is castrated</span>
+                            </p>
+                        }
+                        else
+                        {
+
+                            <p class="row">
+                                <span>He is not neutered</span>
+                            </p>
+                        }
+                    }
+                </div>
+                <a asp-action="CreateAppointment" asp-route-id="@item.IdPet" class="row btn btn-outline-primary m-1">
+                    Make an Appointment
+                </a>
+
+
+
+            </div>
+        }
+
+    </div>
+</div>
