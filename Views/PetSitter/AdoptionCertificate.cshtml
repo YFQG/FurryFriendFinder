@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Certificado de Adopción</title>
+    <title>Adoption certificate</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
@@ -28,10 +28,10 @@
                 <p><strong>Gender: </strong> @Model.Pet.Gender</p>
             </div>
                 <div style="position:absolute;margin-left:1000px;margin-top:-300px">
-                    <p><strong>Datos del Adoptante</strong></p>
+                    <p><strong>Adopter data</strong></p>
                 <p><strong>Name:</strong> @Model.User.Name</p>
                     @if (Model.User.Accesses.Count > 0){
-                <p><strong>Correo: </strong>@Model.User.Accesses.First().Email </p>}
+                <p><strong>Email: </strong>@Model.User.Accesses.First().Email </p>}
                     <!--Check if the adopter has registered phone numbers-->
                     @if (Model.User.Phones.Count > 0)
                     {
