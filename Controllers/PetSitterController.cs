@@ -448,13 +448,13 @@ namespace FurryFriendFinder.Controllers
                 {
                     return NotFound();
                 }
-                var sthealth = _context.StateHealths.Where(x => x.Castrated == stateHealth.Castrated && x.State == stateHealth.State).First();
+                var sthealth = _context.StateHealths.Where(x => x.Castrated == stateHealth.Castrated && x.State == stateHealth.State).FirstOrDefault();
                 if (sthealth == null)
                 {
                     _context.StateHealths.Add(stateHealth);
                     await _context.SaveChangesAsync();
 
-                    pet.IdStateHealthNavigation = stateHealth;
+                    pet.IdStateHealth = stateHealth.IdStateHealth;
                 }
                 else
                 {
@@ -541,7 +541,7 @@ namespace FurryFriendFinder.Controllers
                 {
                     return Problem("Entity set 'ProyectPetsContext.Pets'  is null.");
                 }
-                var pet = await _context.Pets.FindAsync(id);
+                var pet = await _context.Pets.Include(p=>p.Adoptions).Include(p => p.Vaccines).Include(p => p.AppointmentUsers).FirstAsync(x=>x.IdPet==id);
                 if (pet != null)
                 {
                     _context.Pets.Remove(pet);
