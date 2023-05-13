@@ -21,6 +21,8 @@ namespace FurryFriendFinder.Controllers
 
         public async Task<IActionResult> Index()
         {
+
+            var user5 = _context.Users;
             var proyectContext = _context.Publications.Include(p => p.IdUserNavigation);
             return View(new PubliComment(await _context.Publications.ToListAsync(), await _context.Comments.ToListAsync()));
         }

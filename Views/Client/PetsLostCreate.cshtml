@@ -1,0 +1,53 @@
+﻿@model FurryFriendFinder.Models.Data.Publication
+
+@{
+    Layout = "_LayoutClient";
+    ViewData["Title"] = "Create";
+    //IFormFile Imagee ;
+}
+
+<h1>Create</h1>
+
+<h4>Publication</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+
+        <input type="hidden" asp-for="IdUser" />
+        <form asp-action="PetsLostCreate" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="Image" class="control-label"></label>
+                <input type="file" class="form-control" name="Imagee" accept="image/png, .jpeg, .jpg, image/gif" multiple onclick="SeeImage()"/>
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
+
+<div>
+    <a asp-action="PetsLost">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        
+    }
+}

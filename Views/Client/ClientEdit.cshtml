@@ -1,10 +1,15 @@
 ﻿@using FurryFriendFinder.Models.Data;
-@model FurryFriendFinder.Models.Data.User
-@inject FurryFriendFinderDbContext _Context
-
+@model User
+@inject FurryFriendFinderDbContext context
 @{
-    Layout = "_LayoutSystemAdmin";
+    Layout = "_LayoutClient";
     ViewData["Title"] = "Edit";
+    var Phones = context.Phones.ToList();
+    var Address = context.Addresses.ToList();
+    var Access = context.Accesses.ToList();
+    Phones = Phones.FindAll(x => x.IdUser == Model.IdUser);
+    Address = Address.FindAll(x => x.IdUser == Model.IdUser);
+    Access = Access.FindAll(x => x.IdUser == Model.IdUser);
     var I1 = 0;
     var I2 = 0;
     var I = 0;
@@ -16,35 +21,31 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EditUser" asp-controller="SystemAdmin">
+        <form asp-action="ClientEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IdUser" />
+            <input type="hidden" asp-for="State" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="State" class="control-label"></label>
-                <input asp-for="State" class="form-control" />
-                <span asp-validation-for="State" class="text-danger"></span>
+                <label asp-for="IdRh" class="control-label"></label>
+                <select asp-for="IdRh" class="form-control" asp-items="@ViewBag.IdRh"></select>
             </div>
             <div class="form-group">
                 <label asp-for="BirthDate" class="control-label"></label>
                 <input asp-for="BirthDate" class="form-control" />
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label  class="control-label">Rh</label>
-                <select asp-for="IdRh" class="form-control" asp-items="ViewBag.Rhs"></select>
-                <span asp-validation-for="IdRh" class="text-danger"></span>
-            </div>
             <div class="form-group m-2" id="ListPhones">
-                @foreach (var phon in Model.Phones)
+                @foreach (var phon in Phones)
                 {
                     I++;
                     <div id="Phone@(I)">
-                        @if(I==1){
+                        @if (I == 1)
+                        {
                             <hr />
                         }
                         <span>Phone</span>
@@ -75,11 +76,11 @@
 
 
             <div class="form-group m-2" id="ListAddress">
-                @foreach (var ads in Model.Addresses)
+                @foreach (var ads in Address)
                 {
                     I1++;
                     <div id="Address@(I1)">
-                        @if (I1== 1)
+                        @if (I1 == 1)
                         {
                             <hr />
                         }
@@ -107,12 +108,12 @@
                         }
                     </script>
                 }
-        
+
             </div><input type="button" id="NewAddress" value="New Address" class="btn btn-success m-2">
 
 
             <div class="form-group m-2" id="ListAccess">
-                @foreach (var acs in Model.Accesses)
+                @foreach (var acs in Access)
                 {
                     I2++;
                     <div id="Access@(I2)">
@@ -122,9 +123,8 @@
                         }
                         <span>Email</span>
                         <input type="text" name="Email" class="form-control" value="@(acs.Email)" required>
-                        <input type="hidden" name="Password1" class="form-control" value="@(acs.Password)" required> 
-                        <span>Role</span>
-                        <input type="number" name="Role" class="form-control" value="@(acs.IdRole)" required>
+                        <span>Password</span>
+                        <input type="hidden" name="Password1" class="form-control" value="@(acs.Password)" required>
                         <input type="button" id="BAc@(I2)" Value="Delete Access" class="btn btn-danger m-3">
                         <hr>
                     </div>
@@ -158,7 +158,7 @@
 </div>
 
 <div>
-    <a asp-action="User">Back to List</a>
+    <a asp-action="ClientDetails" asp-route-id="@Model.IdUser">Back to Details</a>
 </div>
 
 @section Scripts {
@@ -170,7 +170,7 @@
         btn_agregarAccess.addEventListener("click", function () {
             i2++;
             const div_Paccess = document.getElementById('ListAccess');
-            
+            //crear el div que contiene los 2 sub-divs
             const div_principal = document.createElement('div');
             //crear el div para el span e input del nombre
             const div_Access = document.createElement('div');
@@ -385,5 +385,7 @@
         }
     </script>
 
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

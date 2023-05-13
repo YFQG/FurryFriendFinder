@@ -30,35 +30,36 @@
            
             <div class="form-group">
                 <label asp-for="inventory.Quantity" class="control-label"></label>
-                <input asp-for="inventory.Quantity" class="form-control" />
+                <input asp-for="inventory.Quantity" class="form-control" placeholder="To add put a normal number and to delete with -" required/>
                 <span asp-validation-for="inventory.Quantity" class="text-danger"></span>
             </div>
             
             <!--Input field for product name-->
             <div class="form-group">
                 <label asp-for="product.ProductName" class="control-label"></label>
-                <input asp-for="product.ProductName" id="Name" class="form-control" />
+                <input asp-for="product.ProductName" id="Name" class="form-control" required/>
                 <span asp-validation-for="product.ProductName" class="text-danger"></span>
             </div>
             <!--Input field for animal type-->
             <div class="form-group">
                 <p class="control-label">@nameof(AnimalType)</p>
-                <input asp-for="type.Type" id="Type" class="form-control" />
+                <input asp-for="type.Type" id="Type" class="form-control" required/>
                 <span asp-validation-for="type.Type" class="text-danger"></span>
             </div>
             <!--Input field for the brand-->
             <div class="form-group">
                 <label asp-for="brand.NameBrand" class="control-label"></label>
-                <input asp-for="brand.NameBrand" id="Brand" class="form-control" />
+                <input asp-for="brand.NameBrand" id="Brand" class="form-control" required/>
                 <span asp-validation-for="brand.NameBrand" class="text-danger"></span>
                 
             </div>
             <!--Input field for the packaging-->
             <div class="form-group">
                 <label asp-for="packing.TypePacking" class="control-label"></label>
-                <input asp-for="packing.TypePacking" id="Packing" class="form-control" />
+                <input asp-for="packing.TypePacking" id="Packing" class="form-control" required/>
                 <span asp-validation-for="packing.TypePacking" class="text-danger"></span>
             </div>
+            </br>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

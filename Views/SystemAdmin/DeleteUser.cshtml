@@ -36,6 +36,67 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.IdRhNavigation.RhType)
         </dd>
+
+        @if (Model.Phones.Count > 0)
+        {
+            <dt class="col-sm-11 m-1 text-info">
+                <span>Phones</span>
+            </dt>
+        }
+        @{
+            int p = 0;
+        }
+        @foreach (var phon in Model.Phones)
+        {
+            p++;
+            <dt class="col-sm-2">
+                <span>Phone @(p)</span>
+            </dt>
+            <dd class="col-sm-10">
+                @(phon.Phone1)
+            </dd>
+        }
+        @if (Model.Addresses.Count > 0)
+        {
+            <dt class="col-sm-11  m-1 text-info">
+                <span>Address</span>
+            </dt>
+        }
+        @{
+            var ad = 0;
+        }
+        @foreach (var ads in Model.Addresses)
+        {
+            ad++;
+
+            <dt class="col-sm-2">
+                <span>Address @(ad)</span>
+            </dt>
+            <dd class="col-sm-10">
+                @(ads.Address1)
+            </dd>
+
+        }
+        @if (Model.Accesses.Count > 0)
+        {
+            <dt class="col-sm-11 m-1 text-info">
+                <span>Access</span>
+            </dt>
+        }
+        @foreach (var acs in Model.Accesses)
+        {
+            <dt class="col-sm-2">
+                <span>Email</span>
+            </dt>
+
+            <dd class="col-sm-10" value="" required>
+                @(acs.Email)
+            </dd>
+            <dt class="col-sm-2">Role</dt>
+            <dd class="col-sm-10" value="" required>
+                @(acs.IdRole)
+            </dd>
+        }
     </dl>
     
     <form asp-action="DeleteUser">

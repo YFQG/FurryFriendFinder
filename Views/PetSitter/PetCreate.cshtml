@@ -10,7 +10,7 @@
 
 <h4>Pet</h4>
 <hr />
-<div class="row">
+<div class="row justify-content-center justify-content-md-start4">
     <div class="col-md-4">
         <form asp-action="PetCreate" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -31,9 +31,8 @@
             <!--Input field for the Gender-->
             <div class="form-group">
                 <label asp-for="pet.Gender" class="control-label"></label>
-                <input asp-for="pet.Gender" class="form-control" />
-                <span asp-validation-for="pet.Gender" class="text-danger"></span>
-                <!--Input field for the BirthYear-->
+<!--Input field for the BirthYear-->
+                <select asp-for="pet.Gender" class="form-control" asp-items="ViewBag.GenderValues"></select>
             </div>
             <div class="form-group">
                 <label asp-for="pet.BirthYear" class="control-label"></label>
@@ -42,25 +41,25 @@
             </div>
             <!--Input field for the IdAnimalType-->
             <div class="form-group">
-                <label asp-for="pet.IdAnimalType" class="control-label"></label>
+                <label class="control-label">Animal type</label>
                 <select asp-for="pet.IdAnimalType" class="form-control" asp-items="ViewBag.IdAnimalType"></select>
             </div>
             <!--Input field for the IdBreed-->
             <div class="form-group">
-                <label asp-for="pet.IdBreed" class="control-label"></label>
+                <label class="control-label">Breed</label>
                 <select asp-for="pet.IdBreed" class="form-control" asp-items="ViewBag.IdBreed"></select>
             </div>
             <!--Input field for the Castrated-->
             <div class="form-group">
-                <label asp-for="stateHealth.Castrated" class="control-label"></label>
-                <input asp-for="stateHealth.Castrated" class="form-control" type="text">
+                <label class="control-label">Castrated</label>
+                <select  class="form-control" asp-items="ViewBag.CastratedValues" name="castrated"></select>
             </div>
 
-            @*Estado de Salud*@
+            @*State Health*@
 
             <div class="form-group">
                 <label asp-for="stateHealth.State" class="control-label"></label>
-                <input asp-for="stateHealth.State" class="form-control" />
+                <input asp-for="stateHealth.State" class="form-control" required/>
                 <span asp-validation-for="stateHealth.State" class="text-danger"></span>
             </div>
             @*List of Vaccine*@

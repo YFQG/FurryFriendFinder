@@ -1,0 +1,96 @@
+﻿@using FurryFriendFinder.Models.Data;
+@model FurryFriendFinder.Models.Data.Pet
+@inject FurryFriendFinderDbContext _context
+@{
+    Layout = "_LayoutClient";
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Pet</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.PetName)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.PetName)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.IdBreedNavigation.Breed1)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.IdBreedNavigation.Breed1)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.BirthYear)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.BirthYear)
+        </dd>
+        @if (Model.PetImage != null)
+        {
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.PetImage)
+            </dt>
+            <dd class="col-sm-9">
+                <image class="w-25" src="data:image/png;base64,@Convert.ToBase64String(Model.PetImage)">
+            </dd>
+        }
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.IdAnimalTypeNavigation.Type)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.IdAnimalTypeNavigation.Type
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.IdStateHealthNavigation.Castrated)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.IdStateHealthNavigation.Castrated
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.IdStateHealthNavigation.State)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.IdStateHealthNavigation.State
+        </dd>
+        @if (Model.Vaccines.Count > 0)
+        {
+            <dt class="col-md-12">
+                @Html.DisplayNameFor(model => model.Vaccines)
+            </dt>
+            @foreach (var vaccine in Model.Vaccines)
+            {
+
+                <dt class="col-sm-3">
+                    @nameof(vaccine.TypeVaccine)
+                </dt>
+                <dd class="col-sm-9">
+                    <p class="form-control">@vaccine.TypeVaccine</p>
+                </dd>
+                <dt class="col-sm-3">
+                    @nameof(vaccine.VaccinationDate)
+                </dt>
+                <dd class="col-sm-9">
+                    <p class="form-control">@vaccine.VaccinationDate</p>
+                </dd>
+            }
+
+        
+        }
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to main page</a>
+</div>

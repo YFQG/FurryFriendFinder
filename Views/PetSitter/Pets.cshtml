@@ -1,4 +1,4 @@
-﻿@using FurryFriendFinder.Models.Data
+@using FurryFriendFinder.Models.Data
 @model IEnumerable<FurryFriendFinder.Models.Data.Pet>
 @inject FurryFriendFinderDbContext _context
 @{
@@ -19,47 +19,43 @@
     <!--Link to create a new item-->
     <a asp-action="PetCreate">Create New</a> 
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th style="width:50%;min-width:25%">
-                <!--Column name for pet image-->
-                @Html.DisplayNameFor(model => model.PetImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PetName)<!-- Column name for pet name -->
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gender)<!-- Column name for pet gender -->
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BirthYear)<!-- Column name for pet birth year -->
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Adoptions.First().IdAdoptionDateNavigation.RegisterAdoption)<!-- Column name for adoption date -->
-            </th>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.IdAnimalTypeNavigation.Type) <!-- Column name for animal type -->
-            </th>
-            <th>
-                @nameof(Breed)
-            </th>
-            <th style ="width:25%;min-width:25%">
-                @Html.DisplayNameFor(model => model.IdStateHealthNavigation.State)<!-- Column name for health state -->
-            </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.IdStateHealthNavigation.Castrated)<!-- Column name for castration information -->
-            </th>
-            </th>
+<div class="row justify-content-center justify-content-md-start4">
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width:50%;min-width:25%">
+                    @Html.DisplayNameFor(model => model.PetImage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PetName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BirthYear)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Adoptions.First().IdAdoptionDateNavigation.RegisterAdoption)
+                </th>
             
-          
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+                <th>
+                @Html.DisplayNameFor(model => model.IdAnimalTypeNavigation.Type)
+                </th>
+                <th>
+                    @nameof(Breed)
+                </th>
+                <th style ="width:25%;min-width:25%">
+                    @Html.DisplayNameFor(model => model.IdStateHealthNavigation.State)
+                </th>
 
+                <th>
+                @Html.DisplayNameFor(model => model.IdStateHealthNavigation.Castrated)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
 
         @foreach (var item in Model)
         {
@@ -121,15 +117,33 @@
                         }
                     </div>
                 </td>
-
-
-
-
-
-
-
-            </tr>
-        }
-    </tbody>
-</table>
-
+                        <td>
+                            @if (item.IdBreed != null)
+                        {
+                            <p>@item.IdBreedNavigation.Breed1</p>
+                        }
+                    </td>
+                    <td>
+                        <p>
+                        @StateHealth.Find(x=>x.IdStateHealth==item.IdStateHealth).State</p>
+                    </td>
+                    <td>
+                    @StateHealth.Find(x=>x.IdStateHealth==item.IdStateHealth).Castrated
+                    </td>
+             
+                    <td>
+                        <div class="row">
+                        <a asp-action="PetEdit" asp-route-id="@item.IdPet" class="col-md-5">Edit</a>
+                        <a asp-action="PetDetails" asp-route-id="@item.IdPet" class="col-md-6">Details</a>
+                        <a asp-action="PetDelete" asp-route-id="@item.IdPet" class="col-md-6">Delete</a>
+                            @if (item.Adoptions.Count == 0)
+                            {
+                                <a asp-action="CreateAdoption" asp-route-id="@item.IdPet" class="col-md-7">Adoption</a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

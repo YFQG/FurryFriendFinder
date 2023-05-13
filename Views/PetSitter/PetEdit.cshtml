@@ -1,4 +1,4 @@
-﻿@using FurryFriendFinder.Models.Data
+@using FurryFriendFinder.Models.Data
 @using System.Globalization;
 @model FurryFriendFinder.Models.ViewModels.extraPet
 @inject FurryFriendFinderDbContext _context
@@ -26,7 +26,7 @@
 
 <h4>Pet</h4>
 <hr />
-<div class="row">
+<div class="row justify-content-center justify-content-md-start4">
     <div class="col-md-4">
         <form asp-action="PetEdit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -45,19 +45,18 @@
             <!--fields to edit pet PetName-->
             <div class="form-group">
                 <label asp-for="pet.PetName" class="control-label"></label>
-                <input asp-for="pet.PetName" class="form-control" />
+                <input asp-for="pet.PetName" class="form-control" required/>
                 <span asp-validation-for="pet.PetName" class="text-danger"></span>
             </div>
             <!--fields to edit pet Gender-->
             <div class="form-group">
                 <label asp-for="pet.Gender" class="control-label"></label>
-                <input asp-for="pet.Gender" class="form-control" />
-                <span asp-validation-for="pet.Gender" class="text-danger"></span>
+                <select asp-for="pet.Gender" class="form-control" asp-items="ViewBag.GenderValues"></select>
             </div>
             <!--fields to edit pet BirthYear-->
             <div class="form-group">
                 <label asp-for="pet.BirthYear" class="control-label"></label>
-                <input asp-for="pet.BirthYear" class="form-control" />
+                <input asp-for="pet.BirthYear" class="form-control" required/>
                 <span asp-validation-for="pet.BirthYear" class="text-danger"></span>
             </div>
             <!--fields to edit pet IdAnimalType-->
@@ -72,25 +71,17 @@
                 <select asp-for="pet.IdBreed" class="form-control" asp-items="ViewBag.IdBreed"></select>
                 <span asp-validation-for="pet.IdBreed" class="text-danger"></span>
             </div>
-
             <!--fields to edit pet information-->
             <div class="form-group">
-                <label asp-for="stateHealth.Castrated" class="control-label"></label>
-                <input asp-for="stateHealth.Castrated" class="form-control" type="text">
+                <label class="control-label">Castrated</label>
+                <select  class="form-control" asp-items="ViewBag.CastratedValues" name="castrated"></select>
             </div>
             <div class="form-group">
                 <label asp-for="stateHealth.State" class="control-label"></label>
-                <input asp-for="stateHealth.State" class="form-control" />
+                <input asp-for="stateHealth.State" class="form-control" required/>
                 <span asp-validation-for="stateHealth.State" class="text-danger"></span>
             </div>
-
-
-            @*Comienza nueva direccion*@
-
-
-
-
-            <!--Section to edit pet vaccines-->
+            @*Start new rute*@
             <div class="form-group m-2" id="ListVaccine">
                     @foreach (var acs in Vaccine)
                     {
@@ -130,13 +121,10 @@
                             }
                         }
 
-
-                        
                     </script>
                     }
 
-                    @*Termina nueva direccion*@
-
+                    @*End the new rute*@
 
 </div>
                 <input type="button" id="NewVaccine" value="New Vaccine" class="btn btn-success m-2">
@@ -145,31 +133,15 @@
                     <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
 
-
-
         </form>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
 
 <div>
     <a asp-action="Pets">Back to List</a>
 </div>
 
 @section Scripts {
-
-
-    @{
-
-    }
 
     <script>
 
@@ -185,34 +157,27 @@
             i2++;
             // A new div is created to contain the elements of each vaccine
             const div_Paddress = document.getElementById('ListVaccine');
-            // A new div is created to contain the elements of each vaccine
+            //Create the div that contains the two sub-divs.
             const div_principal = document.createElement('div');
-            // If it creates a new div for the field "TypeVaccine"
+            //Create the div for the span and input of the name.
             const div_Vaccine = document.createElement('div');
             div_Vaccine.id = 'Vaccine' + i2;
-            // A new span is created for the text "TypeVaccine"
-
+            //Create the div for the span and input of the last name.
+            ///Create the spans for the first name and last name.
             const span1_Vaccine = document.createElement('span');
             span1_Vaccine.innerHTML = 'TypeVaccine';
-
-
-
-            // A new text input is created to enter the vaccine type
 
             const input1_Vaccine = document.createElement('input');
             input1_Vaccine.type = 'text';
             input1_Vaccine.name = 'Vaccine';
             input1_Vaccine.className = 'form-control';
 
-
         @*Date*@
 
-                // A new span is created for the text "VaccinationDate"
+            // A new "datetime-local" input is created to enter the vaccination date
             const span2_Vaccine = document.createElement('span');
             span2_Vaccine.innerHTML = 'VaccinationDate';
 
-
-            // A new "datetime-local" input is created to enter the vaccination date
             const input2_Vaccine = document.createElement('input');
             input2_Vaccine.type = 'datetime-local';
             input2_Vaccine.id = 'VaccinationDate' + i2;
@@ -220,18 +185,13 @@
 
             input2_Vaccine.className = 'form-control ';
             input2_Vaccine.required = "true";
-
-
-
-
-
+          
                 const Button_Vaccine = document.createElement('input');
                 Button_Vaccine.id = 'BAd' + i2;
                 Button_Vaccine.type = 'button';
                 Button_Vaccine.value = 'Delete Vaccine';
                 Button_Vaccine.className = 'btn btn-danger m-3';
-
-
+          
                 const hr1_Vaccine = document.createElement('hr');
                 const hr_Vaccine = document.createElement('hr');
             // If it is the first vaccine, a horizontal line is added before the vaccine
@@ -241,19 +201,15 @@
                 }
                 div_Vaccine.appendChild(span1_Vaccine);
                 div_Vaccine.appendChild(input1_Vaccine);
-
-
+          
                 div_Vaccine.appendChild(span2_Vaccine);
                 div_Vaccine.appendChild(input2_Vaccine);
-
 
                 div_Vaccine.appendChild(Button_Vaccine);
                 div_Vaccine.appendChild(hr_Vaccine);
 
-
                 div_Paddress.appendChild(div_Vaccine);
-
-
+          
                 createVaccineFunction(i2);
 
             });
@@ -275,8 +231,6 @@
 
 
     </script>
-
-
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

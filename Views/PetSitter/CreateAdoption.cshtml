@@ -1,4 +1,4 @@
-﻿@using FurryFriendFinder.Models.Data;
+@using FurryFriendFinder.Models.Data;
 @using Newtonsoft.Json;
 <!--Link and script added to Layout-->
 @model Pet
@@ -42,13 +42,13 @@
             @Html.DisplayFor(model => model.BirthYear)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IdBreedNavigation)
+            @Html.DisplayNameFor(model => model.IdBreedNavigation.Breed1)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IdBreedNavigation.Breed1)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IdAnimalTypeNavigation)
+            @Html.DisplayNameFor(model => model.IdAnimalTypeNavigation.Type)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IdAnimalTypeNavigation.Type)
@@ -93,9 +93,9 @@
         <!--Hidden field for pet name-->
 
         <div class="ui-widget">
-            <label>Ingrese el cliente que va adoptar la mascota</label>
             <!--Input field for customer name-->
-            <input type="text" name="user" id="user"></input>
+            <LABEL>Enter the client who will adopt the pet.</LABEL>
+            <input type="text" name="user" id="user" required/>
         </div>
         <div class="form-group">
             <!--Button to submit the adoption request-->

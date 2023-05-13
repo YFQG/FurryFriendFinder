@@ -51,9 +51,6 @@
 
 @section Scripts {
     <script>
-
-
-
         var i1 = 0;
         var i2 = 0;
         var i = 0;
@@ -72,8 +69,6 @@
             const span1_Access = document.createElement('span');
             span1_Access.innerHTML = 'Email';
 
-
-
             const input1_Access = document.createElement('input');
             input1_Access.type = 'text';
             input1_Access.name = 'Email';
@@ -82,8 +77,6 @@
 
             const span_Access = document.createElement('span');
             span_Access.innerHTML = 'Password';
-
-
 
             const input_Access = document.createElement('input');
             input_Access.type = 'Password';
@@ -95,8 +88,6 @@
             const span_Access2 = document.createElement('span');
             span_Access2.innerHTML = 'Repeat Password';
 
-
-
             const input_Access2 = document.createElement('input');
             input_Access2.type = 'Password';
             input_Access2.name = 'RepeatPassword';
@@ -104,14 +95,11 @@
             input_Access2.className = 'form-control';
             input_Access2.required = "true";
 
-
-
             const Button_Access = document.createElement('input');
             Button_Access.id = 'BAc' + i2;
             Button_Access.type = 'button';
             Button_Access.value = 'Delete Access';
             Button_Access.className = 'btn btn-danger m-3';
-
 
             const hr_Access = document.createElement('hr');
             const hr1_Access = document.createElement('hr');
@@ -173,18 +161,16 @@
         btn_agregarAddress.addEventListener("click", function () {
             i1++;
             const div_Paddress = document.getElementById('ListAddress');
-            //crear el div que contiene los 2 sub-divs
+            //Create the div that contains the two sub-divs.
             const div_principal = document.createElement('div');
-            //crear el div para el span e input del nombre
+            //Create the div for the span and input of the name.
             const div_Address = document.createElement('div');
             div_Address.id = 'Address' + i1;
-            //crear el div para el span e input del apellido
+            //Create the div for the span and input of the last name.
 
-            //crear los span de nombre y apellido
+            //Create the spans for the first name and last name.
             const span_Address = document.createElement('span');
             span_Address.innerHTML = 'Address';
-
-
 
             const input_Address = document.createElement('input');
             input_Address.type = 'text';
@@ -234,14 +220,14 @@
         btn_agregar.addEventListener("click",function(){
             i++;
             const div_Pphone = document.getElementById('ListPhones');
-        //crear el div que contiene los 2 sub-divs
+        //Create the div that contains the two sub-divs.
             const div_principal = document.createElement('div');
-            //crear el div para el span e input del nombre
+        //Create the div for the span and input of the name.
             const div_Phone = document.createElement('div');
             div_Phone.id='Phone'+i;
             //crear el div para el span e input del apellido
 
-        //crear los span de nombre y apellido
+        //Create the div for the span the full name.
             const span_Phone = document.createElement('span');
             span_Phone.innerHTML ='Phone';
             
