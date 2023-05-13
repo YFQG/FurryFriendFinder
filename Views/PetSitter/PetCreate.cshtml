@@ -31,8 +31,7 @@
 
             <div class="form-group">
                 <label asp-for="pet.Gender" class="control-label"></label>
-                <input asp-for="pet.Gender" class="form-control" />
-                <span asp-validation-for="pet.Gender" class="text-danger"></span>
+                <select asp-for="pet.Gender" class="form-control" asp-items="ViewBag.GenderValues"></select>
             </div>
             <div class="form-group">
                 <label asp-for="pet.BirthYear" class="control-label"></label>
@@ -48,15 +47,15 @@
                 <select asp-for="pet.IdBreed" class="form-control" asp-items="ViewBag.IdBreed"></select>
             </div>
             <div class="form-group">
-                <label asp-for="stateHealth.Castrated" class="control-label"></label>
-                <input asp-for="stateHealth.Castrated" class="form-control" type="text">
+                <label class="control-label">Castrated</label>
+                <select  class="form-control" asp-items="ViewBag.CastratedValues" name="castrated"></select>
             </div>
 
-            @*Estado de Salud*@
+            @*State Health*@
 
             <div class="form-group">
                 <label asp-for="stateHealth.State" class="control-label"></label>
-                <input asp-for="stateHealth.State" class="form-control" />
+                <input asp-for="stateHealth.State" class="form-control" required/>
                 <span asp-validation-for="stateHealth.State" class="text-danger"></span>
             </div>
             @*List of Vaccine*@
