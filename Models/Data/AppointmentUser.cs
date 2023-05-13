@@ -13,9 +13,9 @@ public partial class AppointmentUser
 
     public int IdAppointment { get; set; }
 
-    public virtual Appointment IdAppointmentNavigation { get; set; } = null!;
+    public virtual Appointment? IdAppointmentNavigation { get; set; } = null!;
 
     public virtual Pet? IdPetNavigation { get; set; }
 
-    public virtual User IdUserNavigation { get; set; } = null!;
+    public virtual User? IdUserNavigation { get; set; } = null!;
 }
