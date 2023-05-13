@@ -27,7 +27,8 @@
 
                 </div>
 
-                @Html.DisplayFor(modelItem => item.PetName)
+                <p class="text-info">
+                    @Html.DisplayFor(modelItem => item.PetName)</p>
 
                 <div class="list-group-item col">
                     @if (item.PetImage != null)
@@ -38,21 +39,20 @@
                 <div class="card-texDesription">
                     @if (item.IdStateHealthNavigation!= null)
                     {
-
                         <p class="row">
                             @item.IdStateHealthNavigation.State
                         </p>
                         if (item.IdStateHealthNavigation.Castrated == true)
                         {
                             <p class="row">
-                                <span>He is castrated</span>
+                                <span>Is castrated</span>
                             </p>
                         }
                         else
                         {
 
                             <p class="row">
-                                <span>He is not neutered</span>
+                                <span>Is not neutered</span>
                             </p>
                         }
                     }
