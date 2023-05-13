@@ -6,24 +6,38 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
+using System.Net;
+using System;
+using Newtonsoft.Json.Linq;
 
 namespace FurryFriendFinder.Controllers
 {
 
         [Authorize(Roles = nameof(Rol.PetSitter))]
-        public class PetSitterController : Controller
+
+    // This "PetSitterController" class contains different methods for Caregiver views which you are inheriting from "Controller".
+
+    public class PetSitterController : Controller
         {
             private readonly FurryFriendFinderDbContext _context;
 
-            public PetSitterController(FurryFriendFinderDbContext context)
-            {
-                _context = context;
-            }
 
-            [HttpPost]
-            public async Task<IActionResult> AdoptionCertificate([FromForm] string user, [FromForm] string pet)
-            {
-                Models.Data.User oUser = _context.Users
+        //This constructor is used to initialize a "PetSitterController" instance with a "FurryFriendFinderDbContext" object.
+        public PetSitterController(FurryFriendFinderDbContext context)
+        {
+            _context = context;
+        }
+        [HttpPost]
+
+
+        //Is a controller action that is invoked when an HTTP request is made to a specific endpoint.which calls the parameters "user" and "pet"
+        public async Task<IActionResult> AdoptionCertificate([FromForm] string user, [FromForm] string pet)
+        {
+
+            //query the database using context to obtain a specific user and pet. These objects are assigned to the variables "oUser" and "oPet"
+
+            Models.Data.User oUser = _context.Users
                     .Include(p => p.Accesses)
                     .Include(p => p.Addresses)
                     .Include(p => p.Phones)
@@ -33,7 +47,9 @@ namespace FurryFriendFinder.Controllers
                 DateTime currentDate = DateTime.Today;
                 AdoptionDate adoptionDate = _context.AdoptionDates.FirstOrDefault(ad => ad.RegisterAdoption.HasValue && ad.RegisterAdoption.Value.Date == currentDate);
 
-                if (oUser != null && oPet != null)
+
+            //checks if both oUser and oPet are not void. to issue the adoption certificate
+            if (oUser != null && oPet != null)
                 {
                     Certificate model = new Certificate();
                     model.User = oUser;
@@ -68,8 +84,8 @@ namespace FurryFriendFinder.Controllers
                     return RedirectToAction("Pets");
                 }
             }
-
-            public async Task<IActionResult> CreateAdoption(int? id)
+        // The CreateAdoption method verifies the existence of a pet based on the ID provided and displays a view to allow the user to create an adoption of that pet.
+        public async Task<IActionResult> CreateAdoption(int? id)
             {
                 if (id == null || _context.Pets == null)
                 {
@@ -87,8 +103,9 @@ namespace FurryFriendFinder.Controllers
 
                 return View(pet);
             }
+        // The GetUsers method performs a user search based on a given term and returns the names of the matching users in JSON format.
 
-            public IActionResult GetUsers(string term)
+        public IActionResult GetUsers(string term)
             {
                 var userlist = (from u in _context.Users.ToList()
                                 where u.Name.Contains(term, System.StringComparison.CurrentCultureIgnoreCase)
@@ -96,29 +113,30 @@ namespace FurryFriendFinder.Controllers
                 return Json(userlist);
             }
 
-
-
-
-
-
-
-            public IActionResult GetNames(string term)
+        //The GetNames method takes a term parameter, which represents the search term used to filter products by name.       
+        public IActionResult GetNames(string term)
             {
                 var products = (from u in _context.Products.ToList()
+                                    //Make a LINQ query in the _context. Products collection for a list of products that meet the following criteria:
                                 where u.ProductName.Contains(term, System.StringComparison.CurrentCultureIgnoreCase)
                                 select new { value = u.ProductName });
                 return Json(products);
             }
-            public IActionResult GetTypes(string term)
+        //Action controller used to get a list of animal types that match a given search term.
+        public IActionResult GetTypes(string term)
             {
                 var products = (from u in _context.AnimalTypes.ToList()
+                                    //query LINQ in the context.AnimalTypes collection for a list of animal types
                                 where u.Type.Contains(term, System.StringComparison.CurrentCultureIgnoreCase)
                                 select new { value = u.Type });
                 return Json(products);
             }
-            public IActionResult GetPackings(string term)
+        // Action controller used to get a list of product packaging
+
+        public IActionResult GetPackings(string term)
             {
                 var products = (from u in _context.Packings.ToList()
+                                    //consulta LINQ en la colección _context. Packings para obtener una lista de empaques
                                 where u.TypePacking.Contains(term, System.StringComparison.CurrentCultureIgnoreCase)
                                 select new { value = u.TypePacking });
                 return Json(products);
@@ -134,22 +152,26 @@ namespace FurryFriendFinder.Controllers
 
             public async Task<IActionResult> Inventories()
             {
-                var pf1Context = _context.Inventories
+            // Consult inventory collection including relationships with other entities
+            var pf1Context = _context.Inventories
                     .Include(i => i.IdProductNavigation)
                     .Include(i => i.IdProductNavigation.IdAnimalTypeNavigation)
                     .Include(i => i.IdProductNavigation.IdBrandNavigation)
                     .Include(i => i.IdProductNavigation.IdPackingNavigation)
                     .Include(i => i.IdProductNavigation.IdAnimalTypeNavigation);
-                return View(await pf1Context.ToListAsync());
+
+            // Returns "Inventories" view by passing inventory list as view model
+            return View(await pf1Context.ToListAsync());
             }
             public async Task<IActionResult> InventoryDetails(int? id)
             {
-                if (id == null || _context.Inventories == null)
+            // Check if the 'id' parameter is null or if the 'Inventories' collection is null
+            if (id == null || _context.Inventories == null)
                 {
                     return NotFound();
                 }
-
-                var inventory = await _context.Inventories
+            // Obtain the inventory corresponding to the 'id' provided, including related entities
+            var inventory = await _context.Inventories
                     .Include(i => i.IdProductNavigation)
                     .Include(i => i.IdProductNavigation.IdAnimalTypeNavigation)
                     .Include(i => i.IdProductNavigation.IdBrandNavigation)
@@ -160,20 +182,26 @@ namespace FurryFriendFinder.Controllers
                 {
                     return NotFound();
                 }
-
-                return View(inventory);
+            // Return a view with the found inventory
+            return View(inventory);
             }
-            // GET: Inventories/Create
-            public IActionResult InventoryCreate(int? id)
-            {
-                if (id == null)
-                    return View();
+        // GET: Inventories/Create
 
+        // "InventoryCreate" is a controller action that displays the view to create an inventory of a specific product.
+        public IActionResult InventoryCreate(int? id)
+
+            {
+            // Check if the id parameter is null
+            if (id == null)
+                    return View();
+            //Get the values associated with product
                 var Producto = _context.Products.Find(id);
                 var packing = _context.Packings.Where(x => x.IdPacking == Producto.IdPacking).First();
                 var Brand = _context.Brands.Where(x => x.IdBrand == Producto.IdBrand).First();
                 var type = _context.AnimalTypes.Where(x => x.IdAnimalType == Producto.IdAnimalType).First();
-                return View(new ProductInvent()
+
+            // // Return the view with a new ProductInvent object containing the obtained data
+            return View(new ProductInvent()
                 {
                     product = Producto,
                     packing = packing,
@@ -189,10 +217,13 @@ namespace FurryFriendFinder.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
+        //processes the received data, verifies the validity of them and perform the corresponding operations in the database
         public async Task<IActionResult> InventoryCreate([Bind("IdInventory,Quantity,IdProduct")] Inventory inventory, Product product, AnimalType type, Brand brand, Packing packing, Movement movement)
         {
-
+            // Get the value of the constant "Zero" from the database
             var zero = Convert.ToInt32(_context.Constants.Where(x => x.Description == "Zero").First().Value);
+            // Check if the animal type or inventory quantity is zero
             if (type is null || inventory.Quantity is null)
                 {
                     return View();
@@ -206,7 +237,8 @@ namespace FurryFriendFinder.Controllers
                     bool nuevo = false;
 
                         var p1 = new Product();
-                        if (b1 is not null && p2 is not null && a is not null)
+                // Check if a product already exists with the same brand, packaging and type of animal
+                if (b1 is not null && p2 is not null && a is not null)
                             p1 = _context.Products.Where(x => x.ProductName == product.ProductName && x.IdPacking == p2.IdPacking && x.IdBrand == b1.IdBrand && a.IdAnimalType == x.IdAnimalType).FirstOrDefault();
                        
                     if (p1 !=null || inventory.Quantity >= zero)
@@ -242,7 +274,8 @@ namespace FurryFriendFinder.Controllers
                         }
                         if (p1 is null)
                             nuevo = true;
-                        if (nuevo)
+                    // Setting the brand, packaging and animal values in the product
+                    if (nuevo)
                         {
 
                             product.IdBrand = brand.IdBrand;
@@ -253,15 +286,20 @@ namespace FurryFriendFinder.Controllers
                             inventory.IdProductNavigation = product;
                             _context.Add(inventory);
                             await _context.SaveChangesAsync();
-                            movement.IdProduct = product.IdProduct;
+                        
+                        // Configure product and inventory on the move
+
+                        movement.IdProduct = product.IdProduct;
                             movement.IdInventary = inventory.IdInventory;
                         }
 
                         movement.Quantity = inventory.Quantity;
                         if (!nuevo)
                         {
+                        // If not a new record (editing an existing inventory)
+                        // Find the product p1 inventory
 
-                            var inv = _context.Inventories.Where(x => x.IdProduct == p1.IdProduct).First();
+                        var inv = _context.Inventories.Where(x => x.IdProduct == p1.IdProduct).First();
 
                             movement.IdProduct = p1.IdProduct;
                             movement.IdInventary = inv.IdInventory;
@@ -282,7 +320,8 @@ namespace FurryFriendFinder.Controllers
                         }
 
                         await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Inventories));
+                    // Redirect to action "Inventories"
+                    return RedirectToAction(nameof(Inventories));
                     }
                 }
 
@@ -355,8 +394,8 @@ namespace FurryFriendFinder.Controllers
 
 
 
-
-                if (PetImagee != null)
+            // Check if a pet image has been provided
+            if (PetImagee != null)
                 {
                     var stream = new MemoryStream();
                     PetImagee.CopyTo(stream);
@@ -368,9 +407,9 @@ namespace FurryFriendFinder.Controllers
                         _context.StateHealths.Add(stateHealth);
                         await _context.SaveChangesAsync();
                         pet.IdStateHealth = stateHealth.IdStateHealth;
+                    // Add pet to database and save changes
 
-
-                        _context.Add(pet);
+                    _context.Add(pet);
 
 
 
@@ -378,9 +417,9 @@ namespace FurryFriendFinder.Controllers
                         var num = 0;
 
 
+                    // Adding vaccines to the database and associating them with the pet
 
-
-                        foreach (var p in Vaccine)
+                    foreach (var p in Vaccine)
                         {
 
 
@@ -398,13 +437,14 @@ namespace FurryFriendFinder.Controllers
                 else
                     ViewBag.MessageError = "Insert image ";
 
+            // Prepare the necessary data for the view
 
-
-                ViewData["IdAnimalType"] = new SelectList(_context.AnimalTypes, "IdAnimalType", "Type", pet.IdAnimalType);
+            ViewData["IdAnimalType"] = new SelectList(_context.AnimalTypes, "IdAnimalType", "Type", pet.IdAnimalType);
                 ViewData["IdBreed"] = new SelectList(_context.Breeds, "IdBreed", "Breed1", pet.IdBreed);
                 ViewData["IdStateHealth"] = new SelectList(_context.StateHealths, "IdStateHealth", "IdStateHealth", pet.IdStateHealth);
+            // Devolver la vista con el modelo de datos de mascota y los datos adicionales
 
-                return View(new extraPet(pet));
+            return View(new extraPet(pet));
             }
 
             // GET: Pets/Edit/5
@@ -433,29 +473,34 @@ namespace FurryFriendFinder.Controllers
             [ValidateAntiForgeryToken]
             public async Task<IActionResult> PetEdit(int id, [Bind("IdPet,PetImage,PetName,Gender,BirthYear,IdAnimalType,IdAdoption,IdStateHealth,IdBreed")] Pet pet, IFormFile? PetImagee, List<string> Vaccine, List<DateTime> VaccinationDate, StateHealth stateHealth, Breed breed)
             {
+            // Check if a new pet image has been provided
 
-                if (PetImagee != null)
+            if (PetImagee != null)
                 {
-                    var stream = new MemoryStream();
+                // Copy image to memory sequence
+                var stream = new MemoryStream();
                     PetImagee.CopyTo(stream);
                     pet.PetImage = stream.ToArray();
                 }
-
+            // Check if the id provided matches the pet id
                 if (id != pet.IdPet)
                 {
                     return NotFound();
                 }
-                var sthealth = _context.StateHealths.Where(x => x.Castrated == stateHealth.Castrated && x.State == stateHealth.State).First();
+            // Find the health status in the database that matches the values provided
+            var sthealth = _context.StateHealths.Where(x => x.Castrated == stateHealth.Castrated && x.State == stateHealth.State).First();
                 if (sthealth == null)
                 {
                     _context.StateHealths.Add(stateHealth);
                     await _context.SaveChangesAsync();
+                // Establish the relationship between the pet and the newly created state of health
 
-                    pet.IdStateHealthNavigation = stateHealth;
+                pet.IdStateHealthNavigation = stateHealth;
                 }
                 else
                 {
-                    pet.IdStateHealthNavigation = sthealth;
+                // Establish the relationship between the pet and the existing state of health
+                pet.IdStateHealthNavigation = sthealth;
 
                 }
                 if (ModelState.IsValid && pet.PetImage != null)
@@ -463,10 +508,11 @@ namespace FurryFriendFinder.Controllers
 
                     try
                     {
-                        _context.Update(pet);
+                    // Update the pet in the database
+                    _context.Update(pet);
                         await _context.SaveChangesAsync();
-
-                        var Vacciene = _context.Vaccines.ToList();
+                    // Eliminate all existing vaccines associated with the pet
+                    var Vacciene = _context.Vaccines.ToList();
                         Vacciene = Vacciene.FindAll(x => x.IdPet == pet.IdPet);
                         if (Vacciene != null)
                         {
@@ -475,8 +521,8 @@ namespace FurryFriendFinder.Controllers
                         }
 
                         var num = 0;
-
-                        foreach (var p in Vaccine)
+                    // Add the new vaccines associated with the pet
+                    foreach (var p in Vaccine)
                         {
                             _context.Vaccines.Add(new Vaccine { TypeVaccine = Vaccine[num], VaccinationDate = VaccinationDate[num], IdPetNavigation = pet });
                             num++;
@@ -496,7 +542,8 @@ namespace FurryFriendFinder.Controllers
                             throw;
                         }
                     }
-                    return RedirectToAction(nameof(Pets));
+                // Redirect to action "Pets"
+                return RedirectToAction(nameof(Pets));
                 }
                 else
                 {
@@ -532,16 +579,19 @@ namespace FurryFriendFinder.Controllers
             // POST: Pets/Delete/5
             [HttpPost]
             [ValidateAntiForgeryToken]
-            public async Task<IActionResult> PetDelete(int id)
+        // Check if the set of 'Pets' entities is null
+        public async Task<IActionResult> PetDelete(int id)
             {
                 if (_context.Pets == null)
                 {
                     return Problem("Entity set 'ProyectPetsContext.Pets'  is null.");
                 }
-                var pet = await _context.Pets.FindAsync(id);
+            // Find the pet with the specified id
+            var pet = await _context.Pets.FindAsync(id);
                 if (pet != null)
                 {
-                    _context.Pets.Remove(pet);
+                // Remove the pet from the context
+                _context.Pets.Remove(pet);
                 }
 
                 await _context.SaveChangesAsync();
@@ -550,7 +600,8 @@ namespace FurryFriendFinder.Controllers
 
             private bool PetExists(int id)
             {
-                return (_context.Pets?.Any(e => e.IdPet == id)).GetValueOrDefault();
+            // Check if a pet exists with the id specified in the context
+            return (_context.Pets?.Any(e => e.IdPet == id)).GetValueOrDefault();
             }
         }
     }
