@@ -296,7 +296,8 @@ namespace FurryFriendFinder.Controllers
             {
                 return Problem("Entity set 'ProyectContext.Users'  is null.");
             }
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.Include(p => p.Addresses).Include(p => p.Accesses).Include(p => p.Publications).Include(p => p.Comments).Include(p => p.AppointmentUsers).Include(p => p.Adoptions).FirstAsync(x => x.IdUser == id);
+
             if (user != null)
             {
                 user.State = false;
