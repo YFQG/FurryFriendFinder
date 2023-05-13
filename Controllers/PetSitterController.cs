@@ -167,28 +167,7 @@ namespace FurryFriendFinder.Controllers
             // Returns "Inventories" view by passing inventory list as view model
             return View(await pf1Context.ToListAsync());
             }
-            public async Task<IActionResult> InventoryDetails(int? id)
-            {
-            // Check if the 'id' parameter is null or if the 'Inventories' collection is null
-            if (id == null || _context.Inventories == null)
-                {
-                    return NotFound();
-                }
-            // Obtain the inventory corresponding to the 'id' provided, including related entities
-            var inventory = await _context.Inventories
-                    .Include(i => i.IdProductNavigation)
-                    .Include(i => i.IdProductNavigation.IdAnimalTypeNavigation)
-                    .Include(i => i.IdProductNavigation.IdBrandNavigation)
-                    .Include(i => i.IdProductNavigation.IdPackingNavigation)
-                    .Include(i => i.IdProductNavigation.IdAnimalTypeNavigation)
-                    .FirstOrDefaultAsync(m => m.IdProduct == id);
-                if (inventory == null)
-                {
-                    return NotFound();
-                }
-            // Return a view with the found inventory
-            return View(inventory);
-            }
+
         // GET: Inventories/Create
 
         // "InventoryCreate" is a controller action that displays the view to create an inventory of a specific product.
@@ -302,13 +281,22 @@ namespace FurryFriendFinder.Controllers
                         {
                         // If not a new record (editing an existing inventory)
                         // Find the product p1 inventory
-                        var inv = _context.Inventories.Where(x => x.IdProduct == p1.IdProduct).First();
-                            movement.IdInventary = inv.IdInventory;
-                            movement.IdProduct = p1.IdProduct;
-                            inv.Quantity += inventory.Quantity;
-                            _context.Update(inv);
-                            await _context.SaveChangesAsync();
-                            if (inventory.Quantity < zero) movement.MovementType = false;
+                        var inv = _context.Inventories.Where(x => x.IdProduct == p1.IdProduct).FirstOrDefault();
+                            if (inv == null)
+                            {
+                            inventory.IdProduct = p1.IdProduct;
+                            _context.Add(inventory);
+                                movement.IdInventary = inventory.IdInventory;
+                            }
+                            else 
+                            { 
+                                movement.IdInventary = inv.IdInventory;
+                                inv.Quantity += inventory.Quantity;
+                                _context.Update(inv);
+                            }
+                                movement.IdProduct = p1.IdProduct;
+                                await _context.SaveChangesAsync();
+                                if (inventory.Quantity < zero) movement.MovementType = false;
                         }
                         if (inventory.Quantity >= zero) movement.MovementType = true;
                         _context.Add(movement);
