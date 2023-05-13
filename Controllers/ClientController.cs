@@ -626,7 +626,7 @@ namespace FurryFriendFinder.Controllers
             }
             ViewData["IdPet"] = new SelectList(pets, "IdPet", "PetName", id);
             AppointDate app = new(new Appointment(), new AppointmentUser() { IdUser = Id });
-            return View();
+            return View(app);
         }
 
         /*
@@ -638,7 +638,6 @@ namespace FurryFriendFinder.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAppointment(AppointmentUser appointmentUser, Appointment appointment)
         {
-
 
             if (Id == 0)
             {
