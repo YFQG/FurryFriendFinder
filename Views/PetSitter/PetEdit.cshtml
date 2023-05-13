@@ -8,8 +8,10 @@
     var type = _context.AnimalTypes.ToList();
 
 
+    // Get the list of vaccines associated with the current pet
     var Vaccine = _context.Vaccines.ToList();
     Vaccine = Vaccine.FindAll(x => x.IdPet == Model.pet.IdPet);
+    // Get the list of vaccines associated with the current pet
     var StateHealth = _context.StateHealths.Find(Model.pet.IdStateHealth);
     if (StateHealth != null)
     {
@@ -35,40 +37,43 @@
                 <p class="text-danger">@ViewBag.MessageError</p>
             }
             <div class="form-group">
-                @*Inserto imagen*@
+               @* Insert image of the pet*@
                 <img class="card-img-top w-50 m-2" src="data:image/png;base64,@Convert.ToBase64String(Model.pet.PetImage)" />
                 <input type="file" class="form-control" name="PetImagee" accept="image/png, .jpeg, .jpg, image/gif" multiple onclick="SeeImage()" />
 
             </div>
-
+            <!--fields to edit pet PetName-->
             <div class="form-group">
                 <label asp-for="pet.PetName" class="control-label"></label>
                 <input asp-for="pet.PetName" class="form-control" />
                 <span asp-validation-for="pet.PetName" class="text-danger"></span>
             </div>
+            <!--fields to edit pet Gender-->
             <div class="form-group">
                 <label asp-for="pet.Gender" class="control-label"></label>
                 <input asp-for="pet.Gender" class="form-control" />
                 <span asp-validation-for="pet.Gender" class="text-danger"></span>
             </div>
+            <!--fields to edit pet BirthYear-->
             <div class="form-group">
                 <label asp-for="pet.BirthYear" class="control-label"></label>
                 <input asp-for="pet.BirthYear" class="form-control" />
                 <span asp-validation-for="pet.BirthYear" class="text-danger"></span>
             </div>
+            <!--fields to edit pet IdAnimalType-->
             <div class="form-group">
                 <label asp-for="pet.IdAnimalType" class="control-label"></label>
                 <select asp-for="pet.IdAnimalType" class="form-control" asp-items="ViewBag.IdAnimalType"></select>
                 <span asp-validation-for="pet.IdAnimalType" class="text-danger"></span>
             </div>
-
+            <!--fields to edit pet IdBreed-->
             <div class="form-group">
                 <label asp-for="pet.IdBreed" class="control-label"></label>
                 <select asp-for="pet.IdBreed" class="form-control" asp-items="ViewBag.IdBreed"></select>
                 <span asp-validation-for="pet.IdBreed" class="text-danger"></span>
             </div>
 
-   
+            <!--fields to edit pet information-->
             <div class="form-group">
                 <label asp-for="stateHealth.Castrated" class="control-label"></label>
                 <input asp-for="stateHealth.Castrated" class="form-control" type="text">
@@ -85,7 +90,7 @@
 
 
 
-
+            <!--Section to edit pet vaccines-->
             <div class="form-group m-2" id="ListVaccine">
                     @foreach (var acs in Vaccine)
                     {
@@ -109,16 +114,16 @@
                     </div>
                     <script>
                         createVaccineFunction(@I2);
-
+                        // Function to create the vaccine elimination function with identifier n
                         function createVaccineFunction(n) {
 
                             const b = document.getElementById('BAc' + n);
                             if (b != null) {
                                 b.addEventListener("click", function () {
                                     const p = document.getElementById('vaccine' + n);
-
+                                    // Creating a new div_vaccine element
                                     const div_vaccine = document.createElement('div');
-
+                                    // Add element p to div_vaccine
                                     div_vaccine.appendChild(p);
                                     console.log(div_vaccine);
                                 });
@@ -168,29 +173,31 @@
 
     <script>
 
+        // Assign variable values from backend
         var i1 = @I1;
         var i2 = @I2;
         var i = @I;
-
-
+        // If obtiene el botón "NewVaccine" por su id
+        <!--Form to generate the adoption certificate-- >
         const btn_agregarVaccine = document.getElementById('NewVaccine');
+        //Add an event click the NewVaccine button
         btn_agregarVaccine.addEventListener("click", function () {
             i2++;
+            // A new div is created to contain the elements of each vaccine
             const div_Paddress = document.getElementById('ListVaccine');
-            //crear el div que contiene los 2 sub-divs
+            // A new div is created to contain the elements of each vaccine
             const div_principal = document.createElement('div');
-            //crear el div para el span e input del nombre
+            // If it creates a new div for the field "TypeVaccine"
             const div_Vaccine = document.createElement('div');
             div_Vaccine.id = 'Vaccine' + i2;
-            //crear el div para el span e input del apellido
+            // A new span is created for the text "TypeVaccine"
 
-            //crear los span de nombre y apellido
             const span1_Vaccine = document.createElement('span');
             span1_Vaccine.innerHTML = 'TypeVaccine';
 
 
 
-
+            // A new text input is created to enter the vaccine type
 
             const input1_Vaccine = document.createElement('input');
             input1_Vaccine.type = 'text';
@@ -200,12 +207,12 @@
 
         @*Date*@
 
-
-                                        const span2_Vaccine = document.createElement('span');
+                // A new span is created for the text "VaccinationDate"
+            const span2_Vaccine = document.createElement('span');
             span2_Vaccine.innerHTML = 'VaccinationDate';
 
 
-
+            // A new "datetime-local" input is created to enter the vaccination date
             const input2_Vaccine = document.createElement('input');
             input2_Vaccine.type = 'datetime-local';
             input2_Vaccine.id = 'VaccinationDate' + i2;
@@ -218,52 +225,53 @@
 
 
 
-            const Button_Vaccine = document.createElement('input');
-            Button_Vaccine.id = 'BAd' + i2;
-            Button_Vaccine.type = 'button';
-            Button_Vaccine.value = 'Delete Vaccine';
-            Button_Vaccine.className = 'btn btn-danger m-3';
+                const Button_Vaccine = document.createElement('input');
+                Button_Vaccine.id = 'BAd' + i2;
+                Button_Vaccine.type = 'button';
+                Button_Vaccine.value = 'Delete Vaccine';
+                Button_Vaccine.className = 'btn btn-danger m-3';
 
 
-            const hr1_Vaccine = document.createElement('hr');
-            const hr_Vaccine = document.createElement('hr');
+                const hr1_Vaccine = document.createElement('hr');
+                const hr_Vaccine = document.createElement('hr');
+            // If it is the first vaccine, a horizontal line is added before the vaccine
+
+                if (i2 == 1) {
+                    div_Vaccine.appendChild(hr1_Vaccine);
+                }
+                div_Vaccine.appendChild(span1_Vaccine);
+                div_Vaccine.appendChild(input1_Vaccine);
 
 
-            if (i2 == 1) {
-                div_Vaccine.appendChild(hr1_Vaccine);
+                div_Vaccine.appendChild(span2_Vaccine);
+                div_Vaccine.appendChild(input2_Vaccine);
+
+
+                div_Vaccine.appendChild(Button_Vaccine);
+                div_Vaccine.appendChild(hr_Vaccine);
+
+
+                div_Paddress.appendChild(div_Vaccine);
+
+
+                createVaccineFunction(i2);
+
+            });
+        // Function to handle the event click of the vaccine removal button
+            function createVaccineFunction(n) {
+
+                const b = document.getElementById('BAd' + n);
+                if (b != null) {
+                    b.addEventListener("click", function () {
+                        const p = document.getElementById('Vaccine' + n);
+
+                        const div_access = document.createElement('div');
+
+                        div_access.appendChild(p);
+                        console.log(div_access);
+                    });
+                }
             }
-            div_Vaccine.appendChild(span1_Vaccine);
-            div_Vaccine.appendChild(input1_Vaccine);
-
-
-            div_Vaccine.appendChild(span2_Vaccine);
-            div_Vaccine.appendChild(input2_Vaccine);
-
-
-            div_Vaccine.appendChild(Button_Vaccine);
-            div_Vaccine.appendChild(hr_Vaccine);
-
-
-            div_Paddress.appendChild(div_Vaccine);
-
-
-            createVaccineFunction(i2);
-
-        });
-        function createVaccineFunction(n) {
-
-            const b = document.getElementById('BAd' + n);
-            if (b != null) {
-                b.addEventListener("click", function () {
-                    const p = document.getElementById('Vaccine' + n);
-
-                    const div_access = document.createElement('div');
-
-                    div_access.appendChild(p);
-                    console.log(div_access);
-                });
-            }
-        }
 
 
     </script>

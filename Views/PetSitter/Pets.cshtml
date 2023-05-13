@@ -16,39 +16,42 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="PetCreate">Create New</a>
+    <!--Link to create a new item-->
+    <a asp-action="PetCreate">Create New</a> 
 </p>
 <table class="table">
     <thead>
         <tr>
             <th style="width:50%;min-width:25%">
+                <!--Column name for pet image-->
                 @Html.DisplayNameFor(model => model.PetImage)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PetName)
+                @Html.DisplayNameFor(model => model.PetName)<!-- Column name for pet name -->
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Gender)
+                @Html.DisplayNameFor(model => model.Gender)<!-- Column name for pet gender -->
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BirthYear)
+                @Html.DisplayNameFor(model => model.BirthYear)<!-- Column name for pet birth year -->
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Adoptions.First().IdAdoptionDateNavigation.RegisterAdoption)
+                @Html.DisplayNameFor(model => model.Adoptions.First().IdAdoptionDateNavigation.RegisterAdoption)<!-- Column name for adoption date -->
             </th>
             
             <th>
-            @Html.DisplayNameFor(model => model.IdAnimalTypeNavigation.Type)
+                @Html.DisplayNameFor(model => model.IdAnimalTypeNavigation.Type) <!-- Column name for animal type -->
             </th>
             <th>
                 @nameof(Breed)
             </th>
             <th style ="width:25%;min-width:25%">
-                @Html.DisplayNameFor(model => model.IdStateHealthNavigation.State)
+                @Html.DisplayNameFor(model => model.IdStateHealthNavigation.State)<!-- Column name for health state -->
             </th>
 
             <th>
-            @Html.DisplayNameFor(model => model.IdStateHealthNavigation.Castrated)
+                @Html.DisplayNameFor(model => model.IdStateHealthNavigation.Castrated)<!-- Column name for castration information -->
+            </th>
             </th>
             
           
@@ -62,36 +65,39 @@
         {
             <tr>
                 <td>
-                    @if (item.PetImage != null)
+                    @if (item.PetImage != null)<!-- If the pet has an image -->
                     {
                         <img style="width:50%;min-width:25%" src="data:image/png;base64,@Convert.ToBase64String(item.PetImage)" />
+                        <!-- Display the pet image -->
                     }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PetName)
+                        @Html.DisplayFor(modelItem => item.PetName)<!-- Display the pet name -->
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Gender)
+                        @Html.DisplayFor(modelItem => item.Gender) <!-- Display the pet gender -->
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.BirthYear)
+                        @Html.DisplayFor(modelItem => item.BirthYear)<!-- Display the pet birth year -->
                 </td>
+                    <!-- If the pet has adoptions -->
                 <td>@if (item.Adoptions.Count >0)
                     {
                         <p>  @AdoptionsDate.Find(x=>(Adoptions.Find(x=>x.IdPet==item.IdPet).IdAdoptionDate)==x.IdAdoptionDate).RegisterAdoption</p>
-                    
+                        <!-- Display the adoption date associated with the pet -->
                     }
 
                 </td>
-
+                <!-- Display the animal type of the pet -->
                 <td>
                     @AnimalType.Find(x=>x.IdAnimalType==item.IdAnimalType).Type
                 </td>
                     <td>
-                        @if (item.IdBreed != null)
+                        @if (item.IdBreed != null) <!-- If the pet has a breed -->
                     {
 
                         <p>@item.IdBreedNavigation.Breed1</p>
+                        <!-- Display the breed of the pet -->
                     }
                 </td>
                 <td>
@@ -107,9 +113,11 @@
                     <a asp-action="PetEdit" asp-route-id="@item.IdPet" class="col-md-5">Edit</a>
                     <a asp-action="PetDetails" asp-route-id="@item.IdPet" class="col-md-6">Details</a>
                     <a asp-action="PetDelete" asp-route-id="@item.IdPet" class="col-md-6">Delete</a>
+                            <!-- If the pet doesn't have any adoptions -->
                         @if (item.Adoptions.Count == 0)
                         {
                             <a asp-action="CreateAdoption" asp-route-id="@item.IdPet" class="col-md-7">Adoption</a>
+                            <!-- Display the option to create an adoption for the pet -->
                         }
                     </div>
                 </td>

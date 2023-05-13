@@ -20,32 +20,40 @@
     <div class="col-md-4">
         <form asp-action="InventoryCreate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <!--Input field for the date-->
             <div class="form-group">
                 <label asp-for="movement.Date" class="control-label"></label>
                 <input asp-for="movement.Date" type="datetime-local" class="form-control" />
                 <span asp-validation-for="movement.Date" class="text-danger"></span>
             </div>
+            <!--Input field for the quantity-->
+           
             <div class="form-group">
                 <label asp-for="inventory.Quantity" class="control-label"></label>
                 <input asp-for="inventory.Quantity" class="form-control" />
                 <span asp-validation-for="inventory.Quantity" class="text-danger"></span>
             </div>
+            
+            <!--Input field for product name-->
             <div class="form-group">
                 <label asp-for="product.ProductName" class="control-label"></label>
                 <input asp-for="product.ProductName" id="Name" class="form-control" />
                 <span asp-validation-for="product.ProductName" class="text-danger"></span>
             </div>
+            <!--Input field for animal type-->
             <div class="form-group">
                 <p class="control-label">@nameof(AnimalType)</p>
                 <input asp-for="type.Type" id="Type" class="form-control" />
                 <span asp-validation-for="type.Type" class="text-danger"></span>
             </div>
+            <!--Input field for the brand-->
             <div class="form-group">
                 <label asp-for="brand.NameBrand" class="control-label"></label>
                 <input asp-for="brand.NameBrand" id="Brand" class="form-control" />
                 <span asp-validation-for="brand.NameBrand" class="text-danger"></span>
                 
             </div>
+            <!--Input field for the packaging-->
             <div class="form-group">
                 <label asp-for="packing.TypePacking" class="control-label"></label>
                 <input asp-for="packing.TypePacking" id="Packing" class="form-control" />
@@ -60,28 +68,31 @@
 <hr />
 
 <div>
-    <a asp-action="Inventories">Back to List</a>
+    <!--Link to return to inventory list-->
+    <a asp-action="Inventories">Back to List</a> 
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
-
+        // Autocomplete configuration for the "Packing" field
         $("#Packing").autocomplete({
             source: '@Url.Action("GetPackings","PetSitter")',
             minlength:0
         });
-
+        // Autocomplete configuration for the "Brand" field
         $("#Brand").autocomplete({
             source: '@Url.Action("GetBrands","PetSitter")',
             minlength: 2
         });
+        // Autocomplete configuration for the "Type" field
 
         $("#Type").autocomplete({
             source: '@Url.Action("GetTypes","PetSitter")',
             minlength: 2
         });
+        // Autocomplete configuration for the "Name" field
 
         $("#Name").autocomplete({
             source: '@Url.Action("GetNames","PetSitter")',

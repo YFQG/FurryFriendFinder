@@ -1,6 +1,6 @@
 ﻿@using FurryFriendFinder.Models.Data;
 @using Newtonsoft.Json;
-<!--Se añadio link y script al Layout-->
+<!--Link and script added to Layout-->
 @model Pet
 
 @{
@@ -20,6 +20,8 @@
         <dd class="col-sm-10">
             <img class="card-img-top w-25" src="data:image/png;base64,@Convert.ToBase64String(Model.PetImage)" />
         </dd>
+        <!--Display and label the properties of the Pet model-->
+        <!--Each dt represents the property name and each dd shows the corresponding value-->
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PetName)
         </dt>
@@ -32,6 +34,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Gender)
         </dd>
+        <!--Other properties of model Pet-->
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.BirthYear)
         </dt>
@@ -64,6 +67,7 @@
         </dd>
         @foreach (var vacc in Model.Vaccines)
         {
+            <!--Show the vaccines for the pet-->
             <dt class="col-sm-2">
                 @nameof(Vaccine)
             </dt>
@@ -82,15 +86,19 @@
 
 </div>
 <div class="row">
+    <!--Form to generate the adoption certificate-->
     <form asp-action="AdoptionCertificate" method="post">
 
         <input type="hidden" name="pet" value="@Model.PetName" />
+        <!--Hidden field for pet name-->
 
         <div class="ui-widget">
             <label>Ingrese el cliente que va adoptar la mascota</label>
+            <!--Input field for customer name-->
             <input type="text" name="user" id="user"></input>
         </div>
         <div class="form-group">
+            <!--Button to submit the adoption request-->
             <input type="submit" value="Adopt" class="btn btn-primary" />
         </div>
     </form>
@@ -102,8 +110,8 @@
 @section scripts{
     <script>
         $("#user").autocomplete({
-            source: '@Url.Action("GetUsers", "PetSitter")',//Ruta a donde debe ir
-            minlenght: 2, //minimo letras que debe obtener para autocompletar
+            source: '@Url.Action("GetUsers", "PetSitter")',//Route to where you should go
+            minlenght: 2, //minimum letters you need to get to autocomplete
         });
     </script>
 }
