@@ -11,7 +11,7 @@
 <div>
     <h4>Pet</h4>
     <hr />
-    <dl class="row">
+    <dl class="row justify-content-center justify-content-md-start4">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.pet.PetImage)
         </dt>
@@ -37,13 +37,13 @@
             @Html.DisplayFor(model => model.pet.BirthYear)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.pet.IdBreedNavigation)
+            Breed
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.pet.IdBreedNavigation.Breed1)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.pet.IdAnimalTypeNavigation)
+            Anymal Type
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.pet.IdAnimalTypeNavigation.Type)
