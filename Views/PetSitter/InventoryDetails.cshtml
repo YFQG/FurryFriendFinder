@@ -12,36 +12,47 @@
     <h4>Inventory</h4>
     <hr />
     <dl class="row">
+        <!--- Show inventory quantity label-->
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Quantity)
         </dt>
+        <!--Show the value of inventory quantity-->
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Quantity)
         </dd>
+        <!--Display the product name label associated with the inventory-->
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IdProductNavigation.ProductName)
         </dt>
+        <!--Display the value of the product name associated with the inventory-->
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.IdProductNavigation.ProductName)
         </dd>
+        <!--Show the animal type label associated with the product-->
         <dt class="col-sm-2">
             @nameof(AnimalType)
         </dt>
+        <!--Show the value of the type of animal associated with the product-->
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IdProductNavigation.IdAnimalTypeNavigation.Type)
         </dd>
+        <!--Display the label of the packaging type associated with the product-->
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.IdProductNavigation.IdPackingNavigation.TypePacking)
         </dt>
+        <!--Show the value of the packaging type associated with the product-->
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IdProductNavigation.IdPackingNavigation.TypePacking)
         </dd>
+        <!--Display the brand label associated with the product-->
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.IdProductNavigation.IdBrandNavigation.NameBrand)
         </dt>
+        <!--Show the value of the brand associated with the product-->
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IdProductNavigation.IdBrandNavigation.NameBrand)
         </dd>
+
     </dl>
 </div>
 <div>

@@ -41,17 +41,16 @@ namespace FurryFriendFinder.Controllers
                     if (info.State == true)
                     {
                         var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, user.IdUser.ToString()), //Create
+                            new Claim(ClaimTypes.Email, user.Email)
+                        };
 
-                {
-                    new Claim(ClaimTypes.Name, user.IdUser.ToString()), //Create
-                    new Claim(ClaimTypes.Email, user.Email)
-                };
+                        var rol = (from r in _context.Roles
+                                      where r.IdRole == user.IdRole
+                                      select r.RoleType).First();
 
-                var rol = (from r in _context.Roles
-                              where r.IdRole == user.IdRole
-                              select r.RoleType).First();
-
-                claims.Add(new Claim(ClaimTypes.Role, rol));
+                        claims.Add(new Claim(ClaimTypes.Role, rol));
 
 
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -202,13 +201,13 @@ namespace FurryFriendFinder.Controllers
                     .FirstOrDefault()?.ToString();
             if (password == null) //if the query didn´t find a password realted with this email
             {
-                TempData["ErrorMessage"] = "El correo electrónico ingresado no existe.";
+                TempData["ErrorMessage"] = "The entered email does not exist";
                 return RedirectToAction("ForgotPassword", "Login");
             }
             //Call an async method to send the encrypted password to the password recovery
             var emailSender = new FFFEmail();
-            await emailSender.SendEmailAsync(email, "Cambio de contraseña", "Hola, con esta encriptacion puedes ingresarla en el formulario que se te ha desplegado despues" +
-                $" de enviar el correo.\n Encriptacion: {password}");
+            await emailSender.SendEmailAsync(email, "Reset password", "Hello, with this encryption, you can enter it in the form that has been displayed to you afterwards." +
+                $" to send the emai.\n Encryption: {password}");
 
             return RedirectToAction("PasswordRecovery"); //Send the user to the password recovery view
         }
@@ -238,7 +237,7 @@ namespace FurryFriendFinder.Controllers
             }
             else //if the query is null go back to the view and fill again the inputs
             {
-                TempData["ErrorMessage"] = "El codigo de encriptacion no coindide.";
+                TempData["ErrorMessage"] = "The encryption code does not match.";
                 return RedirectToAction("PasswordRecovery");
             }
 

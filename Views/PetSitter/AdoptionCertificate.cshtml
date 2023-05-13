@@ -1,4 +1,4 @@
-﻿@model FurryFriendFinder.Models.ViewModels.Certificate
+@model FurryFriendFinder.Models.ViewModels.Certificate
 @{
     Layout = "_LayoutEmpty";  
 }
@@ -14,7 +14,7 @@
     <div class="container display-4">
         <div style="margin-top:70px;margin-right:100px">
             <div class="col-md-12 text-center p-4">
-                <p><strong>Certificado de Adopción</strong></p>
+                <p><strong>Adoption certificate</strong></p>
             </div>
         <div class="row">
             <div class="col-md-4">
@@ -22,23 +22,25 @@
                      alt="Mascota" >
             </div>
                 <div style="position:absolute;margin-left:600px;margin-top:-290px">
-                    <p><strong>Mascota:</strong></p>
-                    <p><strong>Nombre:</strong> @Model.Pet.PetName</p>
-                <p><strong>Edad:</strong> @Model.Pet.BirthYear</p>
-                <p><strong>Sexo: </strong> @Model.Pet.Gender</p>
+                    <p><strong>Pet</strong></p>
+                    <p><strong>Name:</strong> @Model.Pet.PetName</p>
+                <p><strong>Age:</strong> @Model.Pet.BirthYear</p>
+                <p><strong>Gender: </strong> @Model.Pet.Gender</p>
             </div>
                 <div style="position:absolute;margin-left:1000px;margin-top:-300px">
                     <p><strong>Datos del Adoptante</strong></p>
-                <p><strong>Nombre:</strong> @Model.User.Name</p>
+                <p><strong>Name:</strong> @Model.User.Name</p>
                     @if (Model.User.Accesses.Count > 0){
                 <p><strong>Correo: </strong>@Model.User.Accesses.First().Email </p>}
+                    <!--Check if the adopter has registered phone numbers-->
                     @if (Model.User.Phones.Count > 0)
                     {
-                        <p><strong>Teléfono: </strong>@Model.User.Phones.First().Phone1</p>
+                        <p><strong>Phone: </strong>@Model.User.Phones.First().Phone1</p>
                     }
+                    <!--Check whether the adopter has registered addresses-->
                     @if (Model.User.Addresses.Count > 0)
                     {
-                        <p><strong>Dirección: </strong>@Model.User.Addresses.First().Address1</p>
+                        <p><strong>Address: </strong>@Model.User.Addresses.First().Address1</p>
                     }
                 </div>
             </div>
@@ -47,7 +49,10 @@
         <br />
         <div class="row p-6">
             <div class="col-md-12">
-                <p>Se extiende el presente certificado como prueba de adopción de la mascota anteriormente descrita. El adoptante se compromete a brindarle a la mascota un hogar seguro y amoroso, así como a proporcionarle los cuidados necesarios para su bienestar y felicidad.</p>
+                <!--Display a message about the adoption certificate-->
+                <p>This certificate is issued as proof of adoption of the previously described pet. 
+                    The adopter commits to providing the pet with a safe and loving home, as well as providing 
+                    the necessary care for its well-being and happiness.</p>
             </div>
         </div>
     </div>
