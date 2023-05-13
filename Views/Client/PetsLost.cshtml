@@ -28,7 +28,7 @@
                     <a asp-action="PetsLostDetails" asp-route-id="@item.IdPublication">Details</a>
                     @if (ViewBag.Id != null)
                     {
-                        @if(ViewBag.Id == item.IdUser)
+                        @if(Model.id == item.IdUserNavigation.IdUser)
                         {
                            <div> |
                     <a asp-action="PetsLostEdit" asp-route-id="@item.IdPublication">Edit</a>  |
@@ -44,8 +44,12 @@
                 @Html.DisplayFor(modelItem => item.IdUserNavigation.Name)
                 }
                 <div class="list-group-item col">
-                <img class="card-img-top " src="data:image/png;base64,@Convert.ToBase64String(item.Image)" />
-                <div class="row">
+               
+                    @if (item.Image != null)
+                    {
+                        <img class="card-img-top " src="data:image/png;base64,@Convert.ToBase64String(item.Image)" />
+                    }
+                    <div class="row">
                 </div>
 
                     @{identity++;}

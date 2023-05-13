@@ -15,6 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IdPublication" />
             <input type="hidden" asp-for="IdUser" />
+            <input type="hidden" asp-for="Image" />
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
@@ -35,10 +36,11 @@
             </div>
         </form>
     </div>
+    @if(Model.Image!=null){
     <div class="col-md-8 ">
 
                    <img class="w-25" src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" />
-    </div>
+    </div>}
 </div>
 
 <div>
