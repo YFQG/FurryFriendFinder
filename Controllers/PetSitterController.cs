@@ -480,8 +480,9 @@ namespace FurryFriendFinder.Controllers
                 {
                     return NotFound();
                 }
+                var sthealth = _context.StateHealths.Where(x => x.Castrated == stateHealth.Castrated && x.State == stateHealth.State).FirstOrDefault();
+
             // Find the health status in the database that matches the values provided
-            var sthealth = _context.StateHealths.Where(x => x.Castrated == stateHealth.Castrated && x.State == stateHealth.State).First();
                 if (sthealth == null)
                 {
                     if (castrated == "yes") stateHealth.Castrated = true;
@@ -490,12 +491,13 @@ namespace FurryFriendFinder.Controllers
                     await _context.SaveChangesAsync();
                 // Establish the relationship between the pet and the newly created state of health
 
-                pet.IdStateHealthNavigation = stateHealth;
+                    pet.IdStateHealth = stateHealth.IdStateHealth;
+
                 }
                 else
                 {
                 // Establish the relationship between the pet and the existing state of health
-                pet.IdStateHealthNavigation = sthealth;
+                    pet.IdStateHealth = sthealth.IdStateHealth;
 
                 }
                 if (ModelState.IsValid && pet.PetImage != null)
@@ -586,7 +588,8 @@ namespace FurryFriendFinder.Controllers
                     return Problem("Entity set 'ProyectPetsContext.Pets'  is null.");
                 }
             // Find the pet with the specified id
-            var pet = await _context.Pets.FindAsync(id);
+                var pet = await _context.Pets.Include(p=>p.Adoptions).Include(p => p.Vaccines).Include(p => p.AppointmentUsers).FirstAsync(x=>x.IdPet==id);
+
 
                 if (pet != null)
                 {
