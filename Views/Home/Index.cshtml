@@ -41,11 +41,6 @@
                 @Html.DisplayFor(modelItem => item.Description)
                 </p>
                 </div>
-                
-                
-
-                
-
                 <style>
 
                     .moda@(identity){
@@ -89,11 +84,7 @@
                    Show Replies
                 </button>
                 <div class="@(moda+identity)" >
-                 
-
-                
-                
-                <div class="col-md model-body">
+                    <div class="col-md model-body">
                     @foreach(var item1 in model2.FindAll(x => x.IdPublication==item.IdPublication))
                     {
                         <div class="row list-group-item">
