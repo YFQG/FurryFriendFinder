@@ -26,7 +26,7 @@
 @foreach (var item in Model.publi) {
             <div class="col-md-4 card"><div>
                     <a asp-action="PetsLostDetails" asp-route-id="@item.IdPublication">Details</a>
-                    @if (ViewBag.Id != null)
+                    @if (item.IdUserNavigation != null)
                     {
                         @if(Model.id == item.IdUserNavigation.IdUser)
                         {
